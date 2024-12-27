@@ -1,0 +1,57 @@
+﻿using System;
+
+namespace System.Globalization
+{
+	// Token: 0x02000011 RID: 17
+	internal enum CalendarId : ushort
+	{
+		// Token: 0x040001B8 RID: 440
+		GREGORIAN = 1,
+		// Token: 0x040001B9 RID: 441
+		GREGORIAN_US,
+		// Token: 0x040001BA RID: 442
+		JAPAN,
+		// Token: 0x040001BB RID: 443
+		TAIWAN,
+		// Token: 0x040001BC RID: 444
+		KOREA,
+		// Token: 0x040001BD RID: 445
+		HIJRI,
+		// Token: 0x040001BE RID: 446
+		THAI,
+		// Token: 0x040001BF RID: 447
+		HEBREW,
+		// Token: 0x040001C0 RID: 448
+		GREGORIAN_ME_FRENCH,
+		// Token: 0x040001C1 RID: 449
+		GREGORIAN_ARABIC,
+		// Token: 0x040001C2 RID: 450
+		GREGORIAN_XLIT_ENGLISH,
+		// Token: 0x040001C3 RID: 451
+		GREGORIAN_XLIT_FRENCH,
+		// Token: 0x040001C4 RID: 452
+		JULIAN,
+		// Token: 0x040001C5 RID: 453
+		JAPANESELUNISOLAR,
+		// Token: 0x040001C6 RID: 454
+		CHINESELUNISOLAR,
+		// Token: 0x040001C7 RID: 455
+		SAKA,
+		// Token: 0x040001C8 RID: 456
+		LUNAR_ETO_CHN,
+		// Token: 0x040001C9 RID: 457
+		LUNAR_ETO_KOR,
+		// Token: 0x040001CA RID: 458
+		LUNAR_ETO_ROKUYOU,
+		// Token: 0x040001CB RID: 459
+		KOREANLUNISOLAR,
+		// Token: 0x040001CC RID: 460
+		TAIWANLUNISOLAR,
+		// Token: 0x040001CD RID: 461
+		PERSIAN,
+		// Token: 0x040001CE RID: 462
+		UMALQURA,
+		// Token: 0x040001CF RID: 463
+		LAST_CALENDAR = 23
+	}
+}
