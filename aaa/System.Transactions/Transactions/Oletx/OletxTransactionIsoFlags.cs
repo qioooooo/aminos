@@ -1,0 +1,34 @@
+﻿using System;
+
+namespace System.Transactions.Oletx
+{
+	// Token: 0x0200007C RID: 124
+	[Flags]
+	internal enum OletxTransactionIsoFlags
+	{
+		// Token: 0x04000194 RID: 404
+		ISOFLAG_NONE = 0,
+		// Token: 0x04000195 RID: 405
+		ISOFLAG_RETAIN_COMMIT_DC = 1,
+		// Token: 0x04000196 RID: 406
+		ISOFLAG_RETAIN_COMMIT = 2,
+		// Token: 0x04000197 RID: 407
+		ISOFLAG_RETAIN_COMMIT_NO = 3,
+		// Token: 0x04000198 RID: 408
+		ISOFLAG_RETAIN_ABORT_DC = 4,
+		// Token: 0x04000199 RID: 409
+		ISOFLAG_RETAIN_ABORT = 8,
+		// Token: 0x0400019A RID: 410
+		ISOFLAG_RETAIN_ABORT_NO = 12,
+		// Token: 0x0400019B RID: 411
+		ISOFLAG_RETAIN_DONTCARE = 5,
+		// Token: 0x0400019C RID: 412
+		ISOFLAG_RETAIN_BOTH = 10,
+		// Token: 0x0400019D RID: 413
+		ISOFLAG_RETAIN_NONE = 15,
+		// Token: 0x0400019E RID: 414
+		ISOFLAG_OPTIMISTIC = 16,
+		// Token: 0x0400019F RID: 415
+		ISOFLAG_READONLY = 32
+	}
+}

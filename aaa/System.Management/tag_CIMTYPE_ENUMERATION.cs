@@ -1,0 +1,47 @@
+﻿using System;
+
+namespace System.Management
+{
+	// Token: 0x020000DF RID: 223
+	internal enum tag_CIMTYPE_ENUMERATION
+	{
+		// Token: 0x04000347 RID: 839
+		CIM_ILLEGAL = 4095,
+		// Token: 0x04000348 RID: 840
+		CIM_EMPTY = 0,
+		// Token: 0x04000349 RID: 841
+		CIM_SINT8 = 16,
+		// Token: 0x0400034A RID: 842
+		CIM_UINT8,
+		// Token: 0x0400034B RID: 843
+		CIM_SINT16 = 2,
+		// Token: 0x0400034C RID: 844
+		CIM_UINT16 = 18,
+		// Token: 0x0400034D RID: 845
+		CIM_SINT32 = 3,
+		// Token: 0x0400034E RID: 846
+		CIM_UINT32 = 19,
+		// Token: 0x0400034F RID: 847
+		CIM_SINT64,
+		// Token: 0x04000350 RID: 848
+		CIM_UINT64,
+		// Token: 0x04000351 RID: 849
+		CIM_REAL32 = 4,
+		// Token: 0x04000352 RID: 850
+		CIM_REAL64,
+		// Token: 0x04000353 RID: 851
+		CIM_BOOLEAN = 11,
+		// Token: 0x04000354 RID: 852
+		CIM_STRING = 8,
+		// Token: 0x04000355 RID: 853
+		CIM_DATETIME = 101,
+		// Token: 0x04000356 RID: 854
+		CIM_REFERENCE,
+		// Token: 0x04000357 RID: 855
+		CIM_CHAR16,
+		// Token: 0x04000358 RID: 856
+		CIM_OBJECT = 13,
+		// Token: 0x04000359 RID: 857
+		CIM_FLAG_ARRAY = 8192
+	}
+}

@@ -1,0 +1,31 @@
+﻿using System;
+
+namespace System.DirectoryServices.Protocols
+{
+	// Token: 0x02000091 RID: 145
+	internal enum BindMethod : uint
+	{
+		// Token: 0x040002B3 RID: 691
+		LDAP_AUTH_SIMPLE = 128U,
+		// Token: 0x040002B4 RID: 692
+		LDAP_AUTH_SASL = 131U,
+		// Token: 0x040002B5 RID: 693
+		LDAP_AUTH_OTHERKIND = 134U,
+		// Token: 0x040002B6 RID: 694
+		LDAP_AUTH_SICILY = 646U,
+		// Token: 0x040002B7 RID: 695
+		LDAP_AUTH_MSN = 2182U,
+		// Token: 0x040002B8 RID: 696
+		LDAP_AUTH_NTLM = 4230U,
+		// Token: 0x040002B9 RID: 697
+		LDAP_AUTH_DPA = 8326U,
+		// Token: 0x040002BA RID: 698
+		LDAP_AUTH_NEGOTIATE = 1158U,
+		// Token: 0x040002BB RID: 699
+		LDAP_AUTH_SSPI = 1158U,
+		// Token: 0x040002BC RID: 700
+		LDAP_AUTH_DIGEST = 16518U,
+		// Token: 0x040002BD RID: 701
+		LDAP_AUTH_EXTERNAL = 166U
+	}
+}
