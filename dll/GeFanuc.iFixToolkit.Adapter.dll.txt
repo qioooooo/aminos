@@ -1,0 +1,14 @@
+GeFanuc.iFixToolkit.Adapter.dll
+
+
+GeFanuc.iFixToolkit.Adapter 文件夹功能总结
+GeFanuc.iFixToolkit.Adapter 文件夹主要包含了与报警系统和数据处理相关的各类文件和子文件夹。这些文件和文件夹定义了报警系统的数据结构、辅助函数、项目配置以及编译时生成的中间文件。总体功能如下：
+
+数据结构定义：包含了各种用于报警系统的数据结构，如 AlmBlockRec、AlmCanonicalValue、AlmExtensionFields、AlmID、AlmOperRec、ENUMBUF、FIX_SYSTEMTIME、VSP 和 almUnion 等。
+辅助函数：提供了一些用于处理报警数据、系统时间和其他相关操作的辅助函数，如 Hda 类和 Helper 类。
+项目配置：包含了项目文件 GeFanuc.iFixToolkit.Adapter.csproj，定义了项目的各种配置信息。
+全局变量和常量：定义了 Globals 类，包含了一组常量，用于表示全局变量和参数。
+错误处理：定义了 FixError 类，包含了一组常量，用于表示各种错误代码。
+程序集配置和属性：Properties 文件夹存放了程序集的配置和属性文件，如 AssemblyInfo.cs，用于提供程序集的元数据信息。
+编译中间文件和缓存：obj/Debug 文件夹用于存放项目在调试模式下生成的中间文件和缓存文件，加速编译过程和管理程序集引用。
+通过这些文件和功能，GeFanuc.iFixToolkit.Adapter 文件夹为报警系统提供了基础的数据结构、辅助方法、项目配置以及编译支持。
