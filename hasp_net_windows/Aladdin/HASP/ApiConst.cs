@@ -1,0 +1,158 @@
+﻿using System;
+
+namespace Aladdin.HASP
+{
+	internal static class ApiConst
+	{
+		public const int HASP_FEATURETYPE_MASK = -65536;
+
+		public const int HASP_PROGNUM_FEATURETYPE = -65536;
+
+		public const int HASP_PROGNUM_MASK = 255;
+
+		public const int HASP_PROGNUM_OPT_MASK = 65280;
+
+		public const int HASP_PROGNUM_OPT_NO_LOCAL = 32768;
+
+		public const int HASP_PROGNUM_OPT_NO_REMOTE = 16384;
+
+		public const int HASP_PROGNUM_OPT_PROCESS = 8192;
+
+		public const int HASP_PROGNUM_OPT_CLASSIC = 4096;
+
+		public const int HASP_PROGNUM_OPT_TS = 2048;
+
+		public const int HASP_DEFAULT_FID = 0;
+
+		public const int HASP_PROGNUM_DEFAULT_FID = -65536;
+
+		public const int HASP_FILEID_MAIN = 65520;
+
+		public const int HASP_FILEID_LICENSE = 65522;
+
+		public const int HASP_FILEID_RW = 65524;
+
+		public const int HASP_FILEID_RO = 65525;
+
+		public const string HASP_UPDATEINFO = "<haspformat format=\"updateinfo\"/>";
+
+		public const string HASP_FASTUPDATEINFO = "<haspformat format=\"fastupdateinfo\"/>";
+
+		public const string HASP_SESSIONINFO = "<haspformat format=\"sessioninfo\"/>";
+
+		public const string HASP_KEYINFO = "<haspformat format=\"keyinfo\"/>";
+
+		public const string HASP_RECIPIENT = "<haspformat root=\"location\">  <license_manager>    <attribute name=\"id\" />    <attribute name=\"time\" />    <element name=\"hostname\" />    <element name=\"version\" />    <element name=\"host_fingerprint\" />  </license_manager></haspformat>";
+
+		public const string HASP_FINGERPRINT = "<haspformat format=\"host_fingerprint\"/>";
+
+		public const int HASP_INVALID_HANDLE_VALUE = 0;
+
+		public const int HASP_MIN_BLOCK_SIZE = 16;
+
+		public const int HASP_MIN_BLOCK_SIZE_LEGACY = 8;
+
+		public enum hasp_error_codes
+		{
+			HASP_STATUS_OK,
+			HASP_MEM_RANGE,
+			HASP_INV_PROGNUM_OPT,
+			HASP_INSUF_MEM,
+			HASP_TMOF,
+			HASP_ACCESS_DENIED,
+			HASP_INCOMPAT_FEATURE,
+			HASP_CONTAINER_NOT_FOUND,
+			HASP_HASP_NOT_FOUND = 7,
+			HASP_TOO_SHORT,
+			HASP_INV_HND,
+			HASP_INV_FILEID,
+			HASP_OLD_DRIVER,
+			HASP_NO_TIME,
+			HASP_SYS_ERR,
+			HASP_NO_DRIVER,
+			HASP_INV_FORMAT,
+			HASP_REQ_NOT_SUPP,
+			HASP_INV_UPDATE_OBJ,
+			HASP_KEYID_NOT_FOUND,
+			HASP_INV_UPDATE_DATA,
+			HASP_INV_UPDATE_NOTSUPP,
+			HASP_INV_UPDATE_CNTR,
+			HASP_INV_VCODE,
+			HASP_ENC_NOT_SUPP,
+			HASP_INV_TIME,
+			HASP_NO_BATTERY_POWER,
+			HASP_NO_ACK_SPACE,
+			HASP_TS_DETECTED,
+			HASP_FEATURE_TYPE_NOT_IMPL,
+			HASP_UNKNOWN_ALG,
+			HASP_INV_SIG,
+			HASP_FEATURE_NOT_FOUND,
+			HASP_NO_LOG,
+			HASP_LOCAL_COMM_ERR,
+			HASP_UNKNOWN_VCODE,
+			HASP_INV_SPEC,
+			HASP_INV_SCOPE,
+			HASP_TOO_MANY_KEYS,
+			HASP_TOO_MANY_USERS,
+			HASP_BROKEN_SESSION,
+			HASP_REMOTE_COMM_ERR,
+			HASP_FEATURE_EXPIRED,
+			HASP_OLD_LM,
+			HASP_DEVICE_ERR,
+			HASP_UPDATE_BLOCKED,
+			HASP_TIME_ERR,
+			HASP_SCHAN_ERR,
+			HASP_STORAGE_CORRUPT,
+			HASP_NO_VLIB,
+			HASP_INV_VLIB,
+			HASP_SCOPE_RESULTS_EMPTY,
+			HASP_VM_DETECTED,
+			HASP_HARDWARE_MODIFIED,
+			HASP_USER_DENIED,
+			HASP_UPDATE_TOO_OLD,
+			HASP_UPDATE_TOO_NEW,
+			HASP_OLD_VLIB,
+			HASP_UPLOAD_ERROR,
+			HASP_INV_RECIPIENT,
+			HASP_INV_DETACH_ACTION,
+			HASP_TOO_MANY_PRODUCTS,
+			HASP_INV_PRODUCT,
+			HASP_UNKNOWN_RECIPIENT,
+			HASP_INV_DURATION,
+			HASP_CLONE_DETECTED,
+			HASP_UPDATE_ALREADY_ADDED,
+			HASP_HASP_INACTIVE,
+			HASP_NO_DETACHABLE_FEATURE,
+			HASP_NO_DEATCHABLE_FEATURE = 67,
+			HASP_TOO_MANY_HOSTS,
+			HASP_REHOST_NOT_ALLOWED,
+			HASP_LICENSE_REHOSTED,
+			HASP_REHOST_ALREADY_APPLIED,
+			HASP_CANNOT_READ_FILE,
+			HASP_EXTENSION_NOT_ALLOWED,
+			HASP_DETACH_DISABLED,
+			HASP_REHOST_DISABLED,
+			HASP_DETACHED_LICENSE_FOUND,
+			HASP_RECIPIENT_OLD_LM,
+			HASP_SECURE_STORE_ID_MISMATCH,
+			HASP_DUPLICATE_HOSTNAME,
+			HASP_MISSING_LM,
+			HASP_NO_API_DYLIB = 400,
+			HASP_INV_API_DYLIB,
+			HASP_INVALID_OBJECT = 500,
+			HASP_INVALID_PARAMETER,
+			HASP_ALREADY_LOGGED_IN,
+			HASP_ALREADY_LOGGED_OUT,
+			HASP_OPERATION_FAILED = 525,
+			HASP_NO_EXTBLOCK = 600,
+			HASP_INV_PORT_TYPE = 650,
+			HASP_INV_PORT,
+			HASP_NET_DLL_BROKEN,
+			HASP_NOT_IMPL = 698,
+			HASP_INT_ERR,
+			HASP_FIRST_HELPER = 2001,
+			HASP_FIRST_HASP_ACT = 3001,
+			HASP_NEXT_FREE_VALUES = 5001
+		}
+	}
+}

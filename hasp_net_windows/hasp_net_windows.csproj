@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9CE558A2-1AD1-4FB4-A739-D3A567119296}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>hasp_net_windows</RootNamespace>
+    <AssemblyName>hasp_net_windows</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>4096</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Aladdin\HASP\ApiConst.cs" />
+    <Compile Include="Aladdin\HASP\DllBrokenException.cs" />
+    <Compile Include="Aladdin\HASP\FeatureOptions.cs" />
+    <Compile Include="Aladdin\HASP\FeatureType.cs" />
+    <Compile Include="Aladdin\HASP\Hasp.cs" />
+    <Compile Include="Aladdin\HASP\HaspFeature.cs" />
+    <Compile Include="Aladdin\HASP\HaspFile.cs" />
+    <Compile Include="Aladdin\HASP\HaspFileId.cs" />
+    <Compile Include="Aladdin\HASP\HaspHandle.cs" />
+    <Compile Include="Aladdin\HASP\HaspLegacy.cs" />
+    <Compile Include="Aladdin\HASP\HaspStatus.cs" />
+    <Compile Include="Aladdin\HASP\HaspVersion.cs" />
+    <Compile Include="Aladdin\HASP\Internal\ApiDisp.cs" />
+    <Compile Include="Aladdin\HASP\Internal\ApiDispatcher.cs" />
+    <Compile Include="Aladdin\HASP\Internal\ApiDispatcher32.cs" />
+    <Compile Include="Aladdin\HASP\Internal\ApiDispatcher64.cs" />
+    <Compile Include="Aladdin\HASP\Internal\ApiDispatcherDarwin.cs" />
+    <Compile Include="Aladdin\HASP\Internal\ApiDispatcherLinux32.cs" />
+    <Compile Include="Aladdin\HASP\Internal\ApiDispatcherLinux64.cs" />
+    <Compile Include="Aladdin\HASP\Internal\NativeMethods32\NativeMethods.cs" />
+    <Compile Include="Aladdin\HASP\Internal\NativeMethods64\NativeMethods.cs" />
+    <Compile Include="Aladdin\HASP\Internal\NativeMethodsDarwin\NativeMethods.cs" />
+    <Compile Include="Aladdin\HASP\Internal\NativeMethodsLinux32\NativeMethods.cs" />
+    <Compile Include="Aladdin\HASP\Internal\NativeMethodsLinux64\NativeMethods.cs" />
+    <Compile Include="HEDS\HedsCrypt.cs" />
+    <Compile Include="HEDS\HedsFile.cs" />
+    <Compile Include="HEDS\HedsSign.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\mscorlib\mscorlib.csproj">
+      <Project>{9CE558A2-1AD1-4FB4-A739-D3A567119290}</Project>
+      <Name>mscorlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System\System.csproj">
+      <Project>{9CE558A2-1AD1-4FB4-A739-D3A567119295}</Project>
+      <Name>System</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

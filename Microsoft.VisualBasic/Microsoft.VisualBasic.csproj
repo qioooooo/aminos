@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FA27B01D-4B09-4407-8F3A-1F4E697B95E5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.VisualBasic</RootNamespace>
+    <AssemblyName>Microsoft.VisualBasic</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>4096</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationServices\ApplicationBase.cs" />
+    <Compile Include="ApplicationServices\AssemblyInfo.cs" />
+    <Compile Include="ApplicationServices\AuthenticationMode.cs" />
+    <Compile Include="ApplicationServices\BuiltInRole.cs" />
+    <Compile Include="ApplicationServices\BuiltInRoleConverter.cs" />
+    <Compile Include="ApplicationServices\CantStartSingleInstanceException.cs" />
+    <Compile Include="ApplicationServices\ConsoleApplicationBase.cs" />
+    <Compile Include="ApplicationServices\NoStartupFormException.cs" />
+    <Compile Include="ApplicationServices\ShutdownEventHandler.cs" />
+    <Compile Include="ApplicationServices\ShutdownMode.cs" />
+    <Compile Include="ApplicationServices\StartupEventArgs.cs" />
+    <Compile Include="ApplicationServices\StartupEventHandler.cs" />
+    <Compile Include="ApplicationServices\StartupNextInstanceEventArgs.cs" />
+    <Compile Include="ApplicationServices\StartupNextInstanceEventHandler.cs" />
+    <Compile Include="ApplicationServices\UnhandledExceptionEventArgs.cs" />
+    <Compile Include="ApplicationServices\UnhandledExceptionEventHandler.cs" />
+    <Compile Include="ApplicationServices\User.cs" />
+    <Compile Include="ApplicationServices\WebUser.cs" />
+    <Compile Include="ApplicationServices\WindowsFormsApplicationBase.cs" />
+    <Compile Include="AppWinStyle.cs" />
+    <Compile Include="AudioPlayMode.cs" />
+    <Compile Include="CallType.cs" />
+    <Compile Include="Collection.cs" />
+    <Compile Include="ComClassAttribute.cs" />
+    <Compile Include="CompareMethod.cs" />
+    <Compile Include="CompilerServices\AssemblyData.cs" />
+    <Compile Include="CompilerServices\BooleanType.cs" />
+    <Compile Include="CompilerServices\ByteType.cs" />
+    <Compile Include="CompilerServices\CharArrayType.cs" />
+    <Compile Include="CompilerServices\CharType.cs" />
+    <Compile Include="CompilerServices\ConversionResolution.cs" />
+    <Compile Include="CompilerServices\Conversions.cs" />
+    <Compile Include="CompilerServices\DateType.cs" />
+    <Compile Include="CompilerServices\DecimalType.cs" />
+    <Compile Include="CompilerServices\DesignerGeneratedAttribute.cs" />
+    <Compile Include="CompilerServices\DoubleType.cs" />
+    <Compile Include="CompilerServices\ExceptionUtils.cs" />
+    <Compile Include="CompilerServices\FlowControl.cs" />
+    <Compile Include="CompilerServices\GetHandler.cs" />
+    <Compile Include="CompilerServices\HostServices.cs" />
+    <Compile Include="CompilerServices\IncompleteInitialization.cs" />
+    <Compile Include="CompilerServices\IntegerType.cs" />
+    <Compile Include="CompilerServices\InternalErrorException.cs" />
+    <Compile Include="CompilerServices\IOUtils.cs" />
+    <Compile Include="CompilerServices\IRecordEnum.cs" />
+    <Compile Include="CompilerServices\IVbHost.cs" />
+    <Compile Include="CompilerServices\LateBinding.cs" />
+    <Compile Include="CompilerServices\LikeOperator.cs" />
+    <Compile Include="CompilerServices\LongType.cs" />
+    <Compile Include="CompilerServices\NativeMethods.cs" />
+    <Compile Include="CompilerServices\NativeTypes.cs" />
+    <Compile Include="CompilerServices\NewLateBinding.cs" />
+    <Compile Include="CompilerServices\ObjectFlowControl.cs" />
+    <Compile Include="CompilerServices\ObjectType.cs" />
+    <Compile Include="CompilerServices\OperatorCaches.cs" />
+    <Compile Include="CompilerServices\Operators.cs" />
+    <Compile Include="CompilerServices\OptionCompareAttribute.cs" />
+    <Compile Include="CompilerServices\OptionTextAttribute.cs" />
+    <Compile Include="CompilerServices\OverloadResolution.cs" />
+    <Compile Include="CompilerServices\ProjectData.cs" />
+    <Compile Include="CompilerServices\PutHandler.cs" />
+    <Compile Include="CompilerServices\ResID.cs" />
+    <Compile Include="CompilerServices\SafeNativeMethods.cs" />
+    <Compile Include="CompilerServices\ShortType.cs" />
+    <Compile Include="CompilerServices\SingleType.cs" />
+    <Compile Include="CompilerServices\StandardModuleAttribute.cs" />
+    <Compile Include="CompilerServices\StaticLocalInitFlag.cs" />
+    <Compile Include="CompilerServices\StringType.cs" />
+    <Compile Include="CompilerServices\StructUtils.cs" />
+    <Compile Include="CompilerServices\Symbols.cs" />
+    <Compile Include="CompilerServices\tagVT.cs" />
+    <Compile Include="CompilerServices\UnsafeNativeMethods.cs" />
+    <Compile Include="CompilerServices\Utils.cs" />
+    <Compile Include="CompilerServices\VB6BinaryFile.cs" />
+    <Compile Include="CompilerServices\VB6File.cs" />
+    <Compile Include="CompilerServices\VB6InputFile.cs" />
+    <Compile Include="CompilerServices\VB6OutputFile.cs" />
+    <Compile Include="CompilerServices\VB6RandomFile.cs" />
+    <Compile Include="CompilerServices\VBBinder.cs" />
+    <Compile Include="CompilerServices\vbErrors.cs" />
+    <Compile Include="CompilerServices\VBInputBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompilerServices\VBInputBox.Designer.cs">
+      <DependentUpon>VBInputBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CompilerServices\Versioned.cs" />
+    <Compile Include="CompilerServices\VT.cs" />
+    <Compile Include="CompilerServices\_Version.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="ControlChars.cs" />
+    <Compile Include="Conversion.cs" />
+    <Compile Include="DateAndTime.cs" />
+    <Compile Include="DateFormat.cs" />
+    <Compile Include="DateInterval.cs" />
+    <Compile Include="Devices\Audio.cs" />
+    <Compile Include="Devices\Clock.cs" />
+    <Compile Include="Devices\Computer.cs" />
+    <Compile Include="Devices\ComputerInfo.cs" />
+    <Compile Include="Devices\Keyboard.cs" />
+    <Compile Include="Devices\Mouse.cs" />
+    <Compile Include="Devices\Network.cs" />
+    <Compile Include="Devices\NetworkAvailableEventArgs.cs" />
+    <Compile Include="Devices\NetworkAvailableEventHandler.cs" />
+    <Compile Include="Devices\Ports.cs" />
+    <Compile Include="Devices\ServerComputer.cs" />
+    <Compile Include="Devices\WebClientExtended.cs" />
+    <Compile Include="DueDate.cs" />
+    <Compile Include="ErrObject.cs" />
+    <Compile Include="FileAttribute.cs" />
+    <Compile Include="FileIO\DeleteDirectoryOption.cs" />
+    <Compile Include="FileIO\FieldType.cs" />
+    <Compile Include="FileIO\FileSystem.cs" />
+    <Compile Include="FileIO\MalformedLineException.cs" />
+    <Compile Include="FileIO\QuoteDelimitedFieldBuilder.cs" />
+    <Compile Include="FileIO\RecycleOption.cs" />
+    <Compile Include="FileIO\SearchOption.cs" />
+    <Compile Include="FileIO\SpecialDirectories.cs" />
+    <Compile Include="FileIO\TextFieldParser.cs" />
+    <Compile Include="FileIO\UICancelOption.cs" />
+    <Compile Include="FileIO\UIOption.cs" />
+    <Compile Include="FileSystem.cs" />
+    <Compile Include="Financial.cs" />
+    <Compile Include="FirstDayOfWeek.cs" />
+    <Compile Include="FirstWeekOfYear.cs" />
+    <Compile Include="ForEachEnum.cs" />
+    <Compile Include="FormatInfoHolder.cs" />
+    <Compile Include="Globals.cs" />
+    <Compile Include="HideModuleNameAttribute.cs" />
+    <Compile Include="Information.cs" />
+    <Compile Include="Interaction.cs" />
+    <Compile Include="Logging\AspLog.cs" />
+    <Compile Include="Logging\DiskSpaceExhaustedOption.cs" />
+    <Compile Include="Logging\FileLogTraceListener.cs" />
+    <Compile Include="Logging\Log.cs" />
+    <Compile Include="Logging\LogFileCreationScheduleOption.cs" />
+    <Compile Include="Logging\LogFileLocation.cs" />
+    <Compile Include="MsgBoxResult.cs" />
+    <Compile Include="MsgBoxStyle.cs" />
+    <Compile Include="MyGroupCollectionAttribute.cs" />
+    <Compile Include="MyServices\ClipboardProxy.cs" />
+    <Compile Include="MyServices\FileSystemProxy.cs" />
+    <Compile Include="MyServices\Internal\ContextValue.cs" />
+    <Compile Include="MyServices\Internal\ProgressDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MyServices\Internal\ProgressDialog.Designer.cs">
+      <DependentUpon>ProgressDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MyServices\Internal\WebClientCopy.cs" />
+    <Compile Include="MyServices\RegistryProxy.cs" />
+    <Compile Include="MyServices\SpecialDirectoriesProxy.cs" />
+    <Compile Include="OpenAccess.cs" />
+    <Compile Include="OpenMode.cs" />
+    <Compile Include="OpenModeTypes.cs" />
+    <Compile Include="OpenShare.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpcInfo.cs" />
+    <Compile Include="Strings.cs" />
+    <Compile Include="TabInfo.cs" />
+    <Compile Include="TriState.cs" />
+    <Compile Include="VariantType.cs" />
+    <Compile Include="VBFixedArrayAttribute.cs" />
+    <Compile Include="VBFixedStringAttribute.cs" />
+    <Compile Include="VBMath.cs" />
+    <Compile Include="VbStrConv.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CompilerServices\VBInputBox.resources" />
+    <EmbeddedResource Include="MyServices\Internal\ProgressDialog.resources" />
+    <EmbeddedResource Include="resources" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
