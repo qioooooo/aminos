@@ -1,0 +1,91 @@
+ System.Speech 文件夹功能总结
+ System.Speech 文件夹包含与语音识别和语音合成相关的多个子模块，每个子模块处理特定方面的功能。这些子模块提供了从音频格式处理、语法构建、对象令牌管理到与 SAPI (Speech API) 互操作的全面支持，确保系统能够高效、可靠地进行语音处理和管理。通过这些类和接口，开发者可以更好地管理和扩展语音识别和合成系统，提升系统的性能、灵活性和用户体验。以下是综合各子模块功能的总结：
+
+1. 音频格式处理 ( System.Speech/AudioFormat)
+功能：定义和管理音频格式信息。
+主要内容：包括音频每采样位数、音频通道数、音频编码格式以及音频格式信息的类和接口。
+示例类：AudioBitsPerSample.cs, AudioChannel.cs, EncodingFormat.cs, SpeechAudioFormatInfo.cs
+
+2. 语法构建 ( System.Speech/Internal/GrammarBuilding)
+功能：创建和管理语音识别的语法元素。
+主要内容：提供一种抽象的方式来定义语法结构，使语音识别系统能够理解用户的语音输入。
+示例类：BuilderElements.cs, GrammarBuilderBase.cs, GrammarBuilderPhrase.cs, RuleElement.cs
+
+3. 对象令牌管理 ( System.Speech/Internal/ObjectTokens)
+功能：管理语音合成和识别系统中的对象令牌、类别和注册表数据键。
+主要内容：提供抽象和管理语音系统中各种对象和配置的方式。
+示例类：ObjectToken.cs, ObjectTokenCategory.cs, RegistryDataKey.cs, SAPICategories.cs
+
+4. SAPI 互操作 ( System.Speech/Internal/SapiInterop)
+功能：与 Windows 的语音 API 进行交互。
+主要内容：处理事件通知、语法构建、识别结果处理、音频流管理等。
+示例类：ISpNotifySink.cs, ISpGrammarBuilder.cs, ISpRecoResult.cs, SpInprocRecognizer.cs
+
+5. SRGS 语法编译 ( System.Speech/Internal/SrgsCompiler)
+功能：处理 SRGS 语法的编译和管理。
+主要内容：提供从语法元素到语法规则的全面支持，用于生成和管理语音识别的语法。
+示例类：CfgGrammar.cs, CfgRule.cs, SrgsCompiler.cs, GrammarOptions.cs
+
+6. SRGS 语法解析 ( System.Speech/Internal/SrgsParser)
+功能：解析和处理 SRGS 语法文档。
+主要内容：提供对 SRGS 语法的解析、元素创建、规则管理等功能。
+示例类：CreateTokenCallback.cs, ISrgsParser.cs, SrgsDocumentParser.cs, XmlParser.cs
+
+7. 语音合成处理 ( System.Speech/Internal/Synthesis)
+功能：处理音频数据、设备输出、格式转换、文本到语音（TTS）引擎、事件处理和 SSML 解析等。
+主要内容：提供从音频数据处理、格式转换、设备输出、文本到语音引擎、事件处理到 SSML 解析的全面支持。
+示例类：AudioBase.cs, ConvertTextFrag.cs, ISsmlParser.cs, VoiceSynthesis.cs
+
+8. 语音处理辅助类 ( System.Speech/Internal)
+功能：提供字母表转换、异步处理、音频格式转换、资源加载、流操作等功能。
+主要内容：确保系统能够高效、可靠地进行语音处理和相关内部操作。
+示例类：AlphabetConverter.cs, AsyncSerializedWorker.cs, Helpers.cs, ResourceLoader.cs
+
+9. 程序集属性管理 ( System.Speech/Properties)
+功能：定义程序集的属性和配置信息。
+主要内容：提供有关程序集的详细信息，确保在不同环境中正确识别和使用程序集。
+示例类：AssemblyInfo.cs
+
+10. SRGS 语法管理 ( System.Speech/Recognition/SrgsGrammar)
+功能：定义、管理和编译语音识别语法。
+主要内容：创建和操作 SRGS 文档、元素、规则、项、语义解释等功能。
+示例类：SrgsDocument.cs, SrgsGrammar.cs, SrgsRule.cs, SrgsSemanticInterpretationTag.cs
+
+11. 语音识别处理 ( System.Speech/Recognition)
+功能：处理音频信号、管理语法、处理识别结果、管理识别器状态和事件。
+主要内容：提供从音频信号处理、语法管理、识别结果处理、识别器状态管理到事件处理的全面支持。
+示例类：AudioLevelUpdatedEventArgs.cs, Grammar.cs, RecognitionResult.cs, SpeechRecognitionEngine.cs
+
+12. 文本到语音引擎 ( System.Speech/Synthesis/TtsEngine)
+功能：处理语音合成中的各种参数、状态和事件。
+主要内容：定义和管理语音合成的音调、节奏、音量、文本片段等功能。
+示例类：ContourPoint.cs, EventParameterType.cs, FragmentState.cs, TtsEngineAction.cs
+
+13. 语音合成功能 ( System.Speech/Synthesis)
+功能：处理语音合成中的各种事件、提示（Prompt）、语音特性和合成器状态等。
+主要内容：提供从事件处理、提示管理、语音合成功能到语音特性管理的全面支持。
+示例类：BookmarkReachedEventArgs.cs, Prompt.cs, SpeechSynthesizer.cs, VoiceInfo.cs
+
+14. 异常消息和字符串资源管理 ( System.Speech)
+功能：处理异常消息、字符串资源和发音映射表。
+主要内容：确保系统能够高效、可靠地处理多语言环境下的语音识别和合成任务。
+示例类：ExceptionStringTable.resources, SR.cs, SRID.cs, upstable_*.upsmap
+通过这些模块， System.Speech 文件夹提供了全面的语音处理和合成功能，确保系统能够高效、可靠地进行语音识别和合成操作。
+
+文件夹功能总结
+ sysglobl 文件夹
+ sysglobl 文件夹包含多个子文件夹和文件，每个子文件夹都有特定的功能：
+
+Globalization 文件夹
+
+主要用于处理文化和区域信息、日期时间格式、XML数据读取和写入、格式转换等功能。
+包含多个类和枚举类型，可以实现对文化和区域信息的构建、读取、写入和转换，以及对日期时间格式和标签常量的管理。
+IO 文件夹
+
+主要功能是处理输入/输出操作。
+包含的 EndianBinaryWriter.cs 文件提供了以特定字节序写入数据的功能。
+Properties 文件夹
+
+主要功能是存储程序集的元数据和配置信息。
+包含的 AssemblyInfo.cs 文件定义了程序集的版本、版权、公司等信息，通过这些属性可以对程序集进行详细的描述和配置。
+综合以上各个子文件夹的功能， sysglobl 文件夹的主要作用是提供处理文化和区域信息、输入/输出操作以及程序集元数据和配置信息的支持和管理功能。

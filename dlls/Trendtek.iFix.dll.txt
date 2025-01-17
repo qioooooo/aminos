@@ -1,0 +1,971 @@
+Resources.cs
+
+using System;
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.Resources;
+using System.Runtime.CompilerServices;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+
+namespace Trendtek.iFix.My.Resources
+{
+	[HideModuleName]
+	[DebuggerNonUserCode]
+	[GeneratedCode("System.Resources.Tools.StronglyTypedResourceBuilder", "2.0.0.0")]
+	[CompilerGenerated]
+	[StandardModule]
+	internal sealed class Resources
+	{
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
+		internal static ResourceManager ResourceManager
+		{
+			get
+			{
+				if (object.ReferenceEquals(Resources.resourceMan, null))
+				{
+					ResourceManager resourceManager = new ResourceManager("Trendtek.iFix.Resources", typeof(Resources).Assembly);
+					Resources.resourceMan = resourceManager;
+				}
+				return Resources.resourceMan;
+			}
+		}
+
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
+		internal static CultureInfo Culture
+		{
+			get
+			{
+				return Resources.resourceCulture;
+			}
+			set
+			{
+				Resources.resourceCulture = value;
+			}
+		}
+
+		private static ResourceManager resourceMan;
+
+		private static CultureInfo resourceCulture;
+	}
+}
+
+Resources.cs
+
+using System;
+using System.Drawing;
+using System.IO;
+using System.Reflection;
+using System.Resources;
+
+namespace System.Deployment.Application
+{
+	internal static class Resources
+	{
+		public static string GetString(string s)
+		{
+			if (Resources._resources == null)
+			{
+				lock (Resources.lockObject)
+				{
+					if (Resources._resources == null)
+					{
+						Resources.InitializeReferenceToAssembly();
+						Resources._resources = new ResourceManager("System.Deployment", Resources._assembly);
+					}
+				}
+			}
+			return Resources._resources.GetString(s);
+		}
+
+		public static Image GetImage(string imageName)
+		{
+			Resources.InitializeReferenceToAssembly();
+			Stream stream = null;
+			Image image;
+			try
+			{
+				stream = Resources._assembly.GetManifestResourceStream(imageName);
+				image = Image.FromStream(stream);
+			}
+			catch
+			{
+				if (stream != null)
+				{
+					stream.Close();
+				}
+				throw;
+			}
+			return image;
+		}
+
+		public static Icon GetIcon(string iconName)
+		{
+			Resources.InitializeReferenceToAssembly();
+			Icon icon;
+			using (Stream manifestResourceStream = Resources._assembly.GetManifestResourceStream(iconName))
+			{
+				icon = new Icon(manifestResourceStream);
+			}
+			return icon;
+		}
+
+		private static void InitializeReferenceToAssembly()
+		{
+			if (Resources._assembly == null)
+			{
+				lock (Resources.lockObject)
+				{
+					if (Resources._assembly == null)
+					{
+						Resources._assembly = Assembly.GetExecutingAssembly();
+					}
+				}
+			}
+		}
+
+		private static object lockObject = new object();
+
+		private static ResourceManager _resources = null;
+
+		private static Assembly _assembly = null;
+	}
+}
+
+MyApplication.cs
+
+using System;
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using Microsoft.VisualBasic.ApplicationServices;
+
+namespace Trendtek.iFix.My
+{
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	[GeneratedCode("MyTemplate", "8.0.0.0")]
+	internal class MyApplication : ApplicationBase
+	{
+		[DebuggerNonUserCode]
+		public MyApplication()
+		{
+		}
+	}
+}
+
+MySettings.Designer.cs
+
+using System;
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Configuration;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+
+namespace Trendtek.iFix.My
+{
+	[CompilerGenerated]
+	[EditorBrowsable(EditorBrowsableState.Advanced)]
+	[GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "9.0.0.0")]
+	internal sealed partial class MySettings : ApplicationSettingsBase
+	{
+		public static MySettings Default
+		{
+			get
+			{
+				return MySettings.defaultInstance;
+			}
+		}
+
+		private static MySettings defaultInstance = (MySettings)SettingsBase.Synchronized(new MySettings());
+	}
+}
+
+
+MySettingsProperty.cs
+
+using System;
+using System.ComponentModel.Design;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+
+namespace Trendtek.iFix.My
+{
+	[StandardModule]
+	[DebuggerNonUserCode]
+	[HideModuleName]
+	[CompilerGenerated]
+	internal sealed class MySettingsProperty
+	{
+		[HelpKeyword("My.Settings")]
+		internal static MySettings Settings
+		{
+			get
+			{
+				return MySettings.Default;
+			}
+		}
+	}
+}
+
+FIXHDA.csusing System;
+using System.Diagnostics;
+using GeFanuc.iFixToolkit.Adapter;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+
+namespace Trendtek.iFix
+{
+	public class FIXHDA
+	{
+		[DebuggerNonUserCode]
+		public FIXHDA()
+		{
+		}
+
+		public int FixHDARead(string sTag, DateTime dDate, string sTime, string sMode, string sDuration, string sInterval, ref float[] afValues, ref int[] aiTimes, ref int[] aiStats, ref int[] aiAlarms, string sHtrPath = "Default")
+		{
+			int num = 0;
+			int[] array = new int[9];
+			string text = dDate.ToShortDateString();
+			checked
+			{
+				int num3;
+				try
+				{
+					int num2 = Hda.DefineGroup(out num);
+					if (num2 != 11000)
+					{
+						num3 = num2;
+					}
+					else
+					{
+						if (Operators.CompareString(sHtrPath.ToUpper(), "Default".ToUpper(), false) != 0)
+						{
+							num2 = Hda.SetPath(num, sHtrPath);
+							if (num2 != 11000)
+							{
+								return num2;
+							}
+						}
+						num2 = Hda.SetStart(num, text, sTime);
+						if (num2 != 11000)
+						{
+							num3 = num2;
+						}
+						else
+						{
+							num2 = Hda.SetDuration(num, sDuration);
+							if (num2 != 11000)
+							{
+								num3 = num2;
+							}
+							else
+							{
+								num2 = Hda.SetInterval(num, sInterval);
+								if (num2 != 11000)
+								{
+									num3 = num2;
+								}
+								else
+								{
+									int num4;
+									num2 = Hda.NtfCount(num, out num4);
+									num2 = Hda.AddNtf(num, out array[num4], sTag);
+									if (num2 != 11000)
+									{
+										num3 = num2;
+									}
+									else
+									{
+										num2 = Hda.SetMode(num, array[0], this.ModeStrToInt(sMode));
+										if (num2 != 11000)
+										{
+											num3 = num2;
+										}
+										else
+										{
+											num2 = Hda.Read(num, 0);
+											if (num2 != 11000)
+											{
+												num3 = num2;
+											}
+											else
+											{
+												int num5;
+												num2 = Hda.GetNumSamples(num, array[0], out num5);
+												if (num2 != 11000)
+												{
+													num3 = num2;
+												}
+												else
+												{
+													afValues = new float[num5 - 1 + 1];
+													aiTimes = new int[num5 - 1 + 1];
+													aiStats = new int[num5 - 1 + 1];
+													aiAlarms = new int[num5 - 1 + 1];
+													num2 = Hda.GetData(num, array[0], 0, num5, afValues, aiTimes, aiStats, aiAlarms);
+													if (num2 != 11000)
+													{
+														num3 = num2;
+													}
+													else
+													{
+														num2 = Hda.DeleteGroup(num);
+														num3 = 11000;
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					num3 = Information.Err().Number;
+				}
+				return num3;
+			}
+		}
+
+		private int ModeStrToInt(string m)
+		{
+			string text = Strings.UCase(m);
+			int num;
+			if (Operators.CompareString(text, Strings.UCase("Sample"), false) == 0)
+			{
+				num = 4;
+			}
+			else if (Operators.CompareString(text, Strings.UCase("Average"), false) == 0)
+			{
+				num = 1;
+			}
+			else if (Operators.CompareString(text, Strings.UCase("High"), false) == 0)
+			{
+				num = 2;
+			}
+			else if (Operators.CompareString(text, Strings.UCase("Low"), false) == 0)
+			{
+				num = 3;
+			}
+			else if (Operators.CompareString(text, Strings.UCase("Raw"), false) == 0)
+			{
+				num = 5;
+			}
+			else
+			{
+				num = -1;
+			}
+			return num;
+		}
+	}
+}
+
+FixHelper.cs
+
+using System;
+using System.Data;
+using System.Management;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Forms;
+using GeFanuc.iFixToolkit.Adapter;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using Microsoft.Win32;
+
+namespace Trendtek.iFix
+{
+	public class FixHelper
+	{
+		public FixHelper()
+		{
+			this.m_nerrno = 0;
+		}
+
+		[DllImport("AADWrapFileAPI.dll", CharSet = CharSet.Ansi, EntryPoint = "AlarmAreasGetAvailNames@20", ExactSpelling = true, SetLastError = true)]
+		private static extern short AlarmAreasGetAvailNames(int lStartIndex, int lBufSize, ref int plBufSizeNeeded, ref int plNumReturned, [MarshalAs(UnmanagedType.VBByRefStr)] ref string aReturnList);
+
+		[DllImport("vdba.dll", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
+		private static extern int eda_get_my_physical_name([MarshalAs(UnmanagedType.VBByRefStr)] ref string Value);
+
+		public short FixGetPath(string sPathId, ref string retPath)
+		{
+			StringBuilder stringBuilder = new StringBuilder(256);
+			StringBuilder stringBuilder2 = new StringBuilder(64);
+			short num = checked((short)Helper.FixGetPath(sPathId, stringBuilder2, 64));
+			if (num == 11000)
+			{
+				retPath = stringBuilder2.ToString();
+			}
+			else
+			{
+				retPath = "";
+			}
+			return num;
+		}
+
+		public string GetFixLogicalNodeName()
+		{
+			StringBuilder stringBuilder = new StringBuilder(9);
+			this.m_nerrno = Helper.FixGetMyName(stringBuilder, checked((short)stringBuilder.Capacity));
+			if (this.m_nerrno == 11000)
+			{
+				return string.Format("{0}", stringBuilder);
+			}
+			return string.Format("Error={0}=", this.m_nerrno);
+		}
+
+		public string GetFixLocalNodeName()
+		{
+			string text2;
+			try
+			{
+				string text = "         ";
+				int num = FixHelper.eda_get_my_physical_name(ref text);
+				long num2 = (long)(checked(Strings.InStr(1, text, "\0", CompareMethod.Binary) - 1));
+				if (num2 > 0L)
+				{
+					text = Strings.Left(text, checked((int)num2));
+				}
+				text = text.Replace(" ", "");
+				if (text.Length < 1)
+				{
+					throw new Exception("Local Node Name is not legal");
+				}
+				text2 = text;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+			return text2;
+		}
+
+		public int GetMajorVersion(FixHelper.FixVersion lVersion)
+		{
+			int num = 0;
+			int num2 = 0;
+			this.m_nerrno = Helper.FixGetRunningVersion(out num, out num2);
+			if (this.m_nerrno != 11000)
+			{
+				return -1;
+			}
+			switch (lVersion)
+			{
+			case FixHelper.FixVersion.Major:
+				return num;
+			case FixHelper.FixVersion.Minor:
+				return num2;
+			default:
+			{
+				int num3;
+				return num3;
+			}
+			}
+		}
+
+		public string GetiFixInstallVersion()
+		{
+			RegistryKey classesRoot = Registry.ClassesRoot;
+			RegistryKey registryKey = classesRoot.OpenSubKey("Fix32\\\\Install");
+			object objectValue = RuntimeHelpers.GetObjectValue(registryKey.GetValue("iFIX Version"));
+			string text;
+			if (objectValue != null)
+			{
+				text = objectValue.ToString();
+			}
+			else
+			{
+				text = "";
+			}
+			return text;
+		}
+
+		public string RemoveNull(string sString)
+		{
+			int num = checked(Strings.InStr(1, sString, "\0", CompareMethod.Binary) - 1);
+			if (num > 0)
+			{
+				return Strings.Left(sString, num);
+			}
+			return Strings.Trim(sString);
+		}
+
+		public string SplitTagName(string sFullName, ref string sNode, ref string sTag, ref string sField)
+		{
+			sFullName = Strings.UCase(sFullName);
+			string[] array = Strings.Split(sFullName, ".", -1, CompareMethod.Binary);
+			if (array.Length == 4)
+			{
+				sNode = array[1];
+				sTag = array[2];
+				sField = array[3];
+				return "OK";
+			}
+			int num = Strings.InStr(sFullName, "FIX32.", CompareMethod.Text);
+			checked
+			{
+				if (num == 1)
+				{
+					num = Strings.InStr(sFullName, ".", CompareMethod.Text);
+					sFullName = Strings.Mid(sFullName, num + 1);
+				}
+				array = Strings.Split(sFullName, ".", -1, CompareMethod.Binary);
+				if (array.Length == 3)
+				{
+					sNode = array[0];
+					sTag = array[1];
+					sField = array[2];
+					return "OK";
+				}
+				if (Strings.InStr(sFullName, ".A_", CompareMethod.Binary) != 0)
+				{
+					num = Strings.InStr(sFullName, ".A_", CompareMethod.Text);
+					sField = Strings.Mid(sFullName, num + 1);
+					sFullName = Strings.Mid(sFullName, 1, num - 1);
+				}
+				if (Strings.InStr(sFullName, ".F_", CompareMethod.Binary) != 0)
+				{
+					num = Strings.InStr(sFullName, ".F_", CompareMethod.Text);
+					sField = Strings.Mid(sFullName, num + 1);
+					sFullName = Strings.Mid(sFullName, 1, num - 1);
+				}
+				if (Strings.InStr(sFullName, ".T_", CompareMethod.Binary) != 0)
+				{
+					num = Strings.InStr(sFullName, ".T_", CompareMethod.Text);
+					sField = Strings.Mid(sFullName, num + 1);
+					sFullName = Strings.Mid(sFullName, 1, num - 1);
+				}
+				if (Strings.Len(sField) < 1)
+				{
+					sField = "A_CV";
+				}
+				array = Strings.Split(sFullName, ".", -1, CompareMethod.Binary);
+				if (array.Length > 2)
+				{
+					return "TagName 語法輸入錯誤";
+				}
+				if (Strings.InStr(sFullName, ".", CompareMethod.Text) != 0)
+				{
+					num = Strings.InStr(sFullName, ".", CompareMethod.Text);
+					sTag = Strings.Mid(sFullName, num + 1);
+					sNode = Strings.Mid(sFullName, 1, num - 1);
+				}
+				else
+				{
+					sTag = sFullName;
+					StringBuilder stringBuilder = new StringBuilder(256);
+					short num2 = (short)Helper.FixGetMyName(stringBuilder, 256);
+					if (num2 != 11000)
+					{
+						StringBuilder stringBuilder2 = new StringBuilder(256);
+						Helper.NlsGetText((int)num2, stringBuilder2, 256);
+						return stringBuilder2.ToString();
+					}
+					sNode = stringBuilder.ToString();
+				}
+				if ((Strings.Len(sTag) < 1) | (Strings.Len(sNode) < 1))
+				{
+					return "TagName 語法輸入錯誤";
+				}
+				return "OK";
+			}
+		}
+
+		public string GetParterner(ref string sLogical, ref string sPrimary, ref string sBackup)
+		{
+			short num = 0;
+			StringBuilder stringBuilder = new StringBuilder(80);
+			checked
+			{
+				string text3;
+				try
+				{
+					short num2 = 99;
+					short num3 = 0;
+					string[] array;
+					short num4 = Eda.EnumAllScadaNodes(out array, ref num3, num2, out num);
+					if ((num4 == 0) | (num4 == 100))
+					{
+						foreach (string text in array)
+						{
+							string text2 = this.RemoveNull(text);
+							int num5;
+							if (Operators.CompareString(sLogical.ToUpper(), text2.ToUpper(), false) == 0)
+							{
+								num5 = (int)Math.Round(unchecked(Conversion.Fix((double)num5 / 3.0) * 3.0));
+								sLogical = this.RemoveNull(array[num5].ToString());
+								sPrimary = this.RemoveNull(array[num5 + 1].ToString());
+								sBackup = this.RemoveNull(array[num5 + 2].ToString());
+								return "OK";
+							}
+							num5++;
+						}
+						text3 = "No this Remote connection in SCU";
+					}
+					else
+					{
+						Helper.NlsGetText((int)num4, stringBuilder, (short)stringBuilder.Capacity);
+						text3 = stringBuilder.ToString();
+					}
+				}
+				catch (Exception ex)
+				{
+					text3 = ex.Message;
+				}
+				return text3;
+			}
+		}
+
+		public string ErrNumToString(int ErrNo)
+		{
+			StringBuilder stringBuilder = new StringBuilder(256);
+			Helper.NlsGetText(ErrNo, stringBuilder, 256);
+			return stringBuilder.ToString();
+		}
+
+		public bool IsFixRunning()
+		{
+			int num = Helper.FixIsFixRunning();
+			return num == 1;
+		}
+
+		public void FixSendMsg(string sMessage, string sArea)
+		{
+			string[] array = new string[] { sArea };
+			short num = Eda.AlmSendText(sMessage, (long)((ulong)(-17)), 15, array);
+		}
+
+		public void GetRemoteNodeNameList(ComboBox myList)
+		{
+			string text = "";
+			StringBuilder stringBuilder = new StringBuilder(9);
+			checked
+			{
+				short num = (short)Helper.FixGetMyName(stringBuilder, (short)stringBuilder.Capacity);
+				if (num == 11000)
+				{
+					text = stringBuilder.ToString();
+				}
+				int num2 = Helper.FixIsFixRunning();
+				if (num2 == 1)
+				{
+					short num3 = 0;
+					short num4 = 99;
+					int num6;
+					short num5 = (short)num6;
+					string[] array;
+					short num7 = Eda.EnumScadaNodes(out array, ref num3, num4, out num5);
+					num6 = (int)num5;
+					num = num7;
+					string[] array2 = new string[num6 - 1 + 1];
+					if ((num == 0) | (num == 100))
+					{
+						int num8 = 0;
+						int num9 = num6 - 1;
+						for (int i = num8; i <= num9; i++)
+						{
+							if (Operators.CompareString(this.RemoveNull(array[i]).ToUpper(), "THISNODE", false) != 0)
+							{
+								array2[i] = this.RemoveNull(array[i]);
+							}
+						}
+						Array.Sort<string>(array2);
+						int num10 = 0;
+						int num11 = num6 - 1;
+						for (int i = num10; i <= num11; i++)
+						{
+							if (!Information.IsNothing(array2[i]))
+							{
+								myList.Items.Add(array2[i]);
+							}
+						}
+						if (myList.Items.Count > 0)
+						{
+							myList.SelectedIndex = 0;
+						}
+					}
+				}
+				int num12 = myList.FindString(text.ToUpper());
+				if (myList.Items.Count > 0 && num12 < 0)
+				{
+					num12 = 0;
+				}
+				myList.SelectedIndex = num12;
+			}
+		}
+
+		public void GetTagsList(string sNode, short nType, short nStartipn, short nMax, ref DataTable dt)
+		{
+			try
+			{
+				short num = 0;
+				StringBuilder stringBuilder = new StringBuilder(80);
+				short num2;
+				for (;;)
+				{
+					string[] array;
+					short[] array2;
+					num2 = Eda.EnumTags(sNode, out array, out array2, nType, ref nStartipn, nMax, out num);
+					if (!((num2 == 0) | (num2 == 1210)))
+					{
+						break;
+					}
+					foreach (string text in array)
+					{
+						text = this.RemoveNull(text).Trim();
+						if (text.Length >= 1)
+						{
+							DataRow dataRow = dt.NewRow();
+							dataRow[0] = text;
+							if (dt.Columns.Count > 1)
+							{
+								dataRow[1] = nType;
+							}
+							dt.Rows.Add(dataRow);
+						}
+					}
+					if (nMax != num)
+					{
+						goto Block_6;
+					}
+				}
+				Helper.NlsGetText((int)num2, stringBuilder, checked((short)stringBuilder.Capacity));
+				throw new Exception(stringBuilder.ToString());
+				Block_6:;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+		}
+
+		public void GetAllTagsList(string sNode, short nType, short nStartipn, short numRequest, ref DataTable dt)
+		{
+			try
+			{
+				short num = 0;
+				StringBuilder stringBuilder = new StringBuilder(80);
+				short num2;
+				for (;;)
+				{
+					string[] array;
+					ENUMBUF enumbuf;
+					num2 = Eda.EnumAllTags(sNode, nType, "", out array, numRequest, out num, out enumbuf);
+					if (!((num2 == 0) | (num2 == 1210)))
+					{
+						break;
+					}
+					foreach (string text in array)
+					{
+						text = this.RemoveNull(text).Trim();
+						if (text.Length >= 1)
+						{
+							DataRow dataRow = dt.NewRow();
+							dataRow[0] = text;
+							if (dt.Columns.Count > 1)
+							{
+								dataRow[1] = nType;
+							}
+							dt.Rows.Add(dataRow);
+						}
+					}
+					if (numRequest != num)
+					{
+						goto Block_6;
+					}
+				}
+				Helper.NlsGetText((int)num2, stringBuilder, checked((short)stringBuilder.Capacity));
+				throw new Exception(stringBuilder.ToString());
+				Block_6:;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+		}
+
+		public void GetAlarmAreaListFromAPI(ref ComboBox lstAreaAlias, ref ListBox lstAreaName)
+		{
+			checked
+			{
+				try
+				{
+					string text = "";
+					byte[] array = new byte[30];
+					long num = 0L;
+					text = Strings.Space(150000);
+					int num2 = (int)num;
+					int num3 = (int)num;
+					long num5;
+					int num4 = (int)num5;
+					long num7;
+					int num6 = (int)num7;
+					FixHelper.AlarmAreasGetAvailNames(num2, num3, ref num4, ref num6, ref text);
+					byte[] bytes;
+					int num8;
+					unchecked
+					{
+						num7 = (long)num6;
+						num5 = (long)num4;
+						bytes = Encoding.Default.GetBytes(text);
+						num8 = 0;
+					}
+					int num9 = (int)(num7 - 1L);
+					for (int i = num8; i <= num9; i++)
+					{
+						Array.Copy(bytes, i * 30, array, 0, 30);
+						string text2 = Encoding.Default.GetString(array);
+						text2 = this.RemoveNull(text2);
+						if (lstAreaName.Items.IndexOf(text2) < 0)
+						{
+							lstAreaAlias.Items.Add(text2);
+							lstAreaName.Items.Add(text2);
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					throw new Exception(ex.Message);
+				}
+			}
+		}
+
+		public bool GetWorkspaceObject(ref object WorkSPace, ref bool RunMode)
+		{
+			bool flag;
+			try
+			{
+				ObjectQuery objectQuery = new ObjectQuery("SELECT * FROM Win32_Process");
+				ManagementObjectSearcher managementObjectSearcher = new ManagementObjectSearcher(objectQuery);
+				try
+				{
+					foreach (ManagementBaseObject managementBaseObject in managementObjectSearcher.Get())
+					{
+						ManagementObject managementObject = (ManagementObject)managementBaseObject;
+						if (Conversions.ToBoolean(LikeOperator.LikeObject(NewLateBinding.LateGet(managementObject["Name"], null, "ToUpper", new object[0], null, null, null), "WorkSpace".ToUpper() + "*", CompareMethod.Binary)))
+						{
+							WorkSPace = RuntimeHelpers.GetObjectValue(Interaction.GetObject("", "Workspace.Application"));
+							break;
+						}
+					}
+				}
+				finally
+				{
+					ManagementObjectCollection.ManagementObjectEnumerator enumerator;
+					if (enumerator != null)
+					{
+						((IDisposable)enumerator).Dispose();
+					}
+				}
+				RunMode = false;
+				if (Information.IsNothing(RuntimeHelpers.GetObjectValue(WorkSPace)))
+				{
+					flag = false;
+				}
+				else
+				{
+					if (Operators.ConditionalCompareObjectEqual(NewLateBinding.LateGet(WorkSPace, null, "Mode", new object[0], null, null, null), 4, false))
+					{
+						RunMode = true;
+					}
+					flag = true;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+			return flag;
+		}
+
+		public bool GetFixBackGroundServer(ref object FixBackGroundServer)
+		{
+			bool flag;
+			try
+			{
+				ObjectQuery objectQuery = new ObjectQuery("SELECT * FROM Win32_Process");
+				ManagementObjectSearcher managementObjectSearcher = new ManagementObjectSearcher(objectQuery);
+				try
+				{
+					foreach (ManagementBaseObject managementBaseObject in managementObjectSearcher.Get())
+					{
+						ManagementObject managementObject = (ManagementObject)managementBaseObject;
+						if (Conversions.ToBoolean(LikeOperator.LikeObject(NewLateBinding.LateGet(managementObject["Name"], null, "ToUpper", new object[0], null, null, null), "FixBackGroundServer".ToUpper() + "*", CompareMethod.Binary)))
+						{
+							FixBackGroundServer = RuntimeHelpers.GetObjectValue(Interaction.GetObject(null, "FixBackGroundServer.Application"));
+							break;
+						}
+					}
+				}
+				finally
+				{
+					ManagementObjectCollection.ManagementObjectEnumerator enumerator;
+					if (enumerator != null)
+					{
+						((IDisposable)enumerator).Dispose();
+					}
+				}
+				if (Information.IsNothing(RuntimeHelpers.GetObjectValue(FixBackGroundServer)))
+				{
+					flag = false;
+				}
+				else
+				{
+					flag = true;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+			return flag;
+		}
+
+		private int m_nerrno;
+
+		public enum FixVersion
+		{
+			Major,
+			Minor
+		}
+	}
+}
+
+Properties/AssemblyInfo.cs
+
+using System;
+using System.Reflection;
+using System.Resources;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Security;
+
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: ImportedFromTypeLib("Accessibility")]
+[assembly: AssemblyDefaultAlias("Accessibility.dll")]
+[assembly: AssemblyCompany("Microsoft Corporation")]
+[assembly: TypeLibVersion(1, 1)]
+[assembly: AssemblyFileVersion("2.0.50727.9157")]
+[assembly: AssemblyDescription("Accessibility.dll")]
+[assembly: CLSCompliant(true)]
+[assembly: SatelliteContractVersion("2.0.0.0")]
+[assembly: AssemblyInformationalVersion("2.0.50727.9157")]
+[assembly: Guid("1ea4dbf0-3c3b-11cf-810c-00aa00389b71")]
+[assembly: ComVisible(true)]
+[assembly: NeutralResourcesLanguage("en-US")]
+[assembly: AssemblyDelaySign(true)]
+[assembly: AssemblyProduct("Microsoft® .NET Framework")]
+[assembly: AssemblyTitle("Accessibility.dll")]
+[assembly: AllowPartiallyTrustedCallers]
+[assembly: AssemblyCopyright("© Microsoft Corporation.  All rights reserved.")]
+[assembly: AssemblyKeyFile("f:\\dd\\Tools\\devdiv\\FinalPublicKey.snk")]

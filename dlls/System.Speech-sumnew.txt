@@ -1,0 +1,42 @@
+在提供的文件内容中，System.Speech 相关的类和方法主要涉及语音识别和语音合成的功能。
+以下是 System.Speech 相关文件之间的调用关系：
+1. 语音合成相关类和方法
+SpeechSynthesizer.cs
+SpeechSynthesizer 类是语音合成的主要入口点，提供了多种方法来控制语音合成，如 Speak、SpeakAsync、SetOutputToWaveFile 等。
+SpeechSynthesizer 类内部调用了 VoiceSynthesis 类来处理具体的语音合成逻辑。
+VoiceSynthesis.cs
+VoiceSynthesis 类负责管理语音合成的内部状态，包括语音引擎的初始化、语音的播放、暂停和恢复等。
+VoiceSynthesis 类内部调用了 TTSVoice 类来处理具体的语音合成任务。
+TTSVoice.cs
+TTSVoice 类封装了具体的语音引擎，提供了方法来生成语音数据。
+TTSVoice 类内部调用了 ITtsEngineProxy 接口来与底层的语音引擎进行交互。
+ITtsEngineProxy.cs
+ITtsEngineProxy 接口定义了与语音引擎交互的方法，具体实现由 TtsProxySapi、TtsProxySsml 和 TtsProxyCom 类提供。
+TtsProxySapi.cs、TtsProxySsml.cs、TtsProxyCom.cs
+这些类实现了 ITtsEngineProxy 接口，分别处理不同类型的语音引擎（如 SAPI、SSML、COM）。
+2. 语音识别相关类和方法
+SpeechRecognitionEngine.cs
+SpeechRecognitionEngine 类是语音识别的主要入口点，提供了多种方法来控制语音识别，如 Recognize、RecognizeAsync、LoadGrammar 等。
+SpeechRecognitionEngine 类内部调用了 RecognizerBase 类来处理具体的语音识别逻辑。
+RecognizerBase.cs
+RecognizerBase 类负责管理语音识别的内部状态，包括识别引擎的初始化、识别任务的启动和停止等。
+RecognizerBase 类内部调用了 ISpRecoResult 接口来处理识别结果。
+ISpRecoResult.cs
+ISpRecoResult 接口定义了与识别结果交互的方法，具体实现由 SpRecoResult 类提供。
+SpRecoResult.cs
+SpRecoResult 类封装了具体的识别结果，提供了方法来获取识别文本、置信度等信息。
+3. 语法和规则相关类和方法
+SrgsDocument.cs
+SrgsDocument 类用于表示语音识别的语法文档，提供了方法来加载和解析语法文件。
+SrgsDocument 类内部调用了 SrgsGrammar 类来处理具体的语法解析逻辑。
+SrgsGrammar.cs
+SrgsGrammar 类负责解析和生成语法文件，提供了方法来验证语法文件的正确性。
+SrgsGrammar 类内部调用了 SrgsRule 类来处理具体的规则定义。
+SrgsRule.cs
+SrgsRule 类用于表示语法文件中的规则，提供了方法来添加和管理规则元素。
+SrgsRule 类内部调用了 SrgsElement 类来处理具体的元素定义。
+SrgsElement.cs
+SrgsElement 类用于表示语法文件中的元素，提供了方法来验证和生成元素的 XML 表示。
+SrgsElement 类内部调用了 SrgsSemanticInterpretationTag 类来处理语义解释标签。
+SrgsSemanticInterpretationTag.cs
+SrgsSemanticInterpretationTag 类用于表示语义解释标签，提供了方法来处理标签的内容和属性。

@@ -1,0 +1,930 @@
+HedsCrypt.cs
+
+using System;
+using System.Security.Cryptography;
+
+namespace HEDS
+{
+	internal class HedsCrypt
+	{
+		public void Init(string s)
+		{
+			this.rsaProvider = new RSACryptoServiceProvider();
+			this.rsaProvider.FromXmlString(s);
+		}
+
+		public bool VerifyData(byte[] bSource, byte[] bSign)
+		{
+			return this.rsaProvider.VerifyData(bSource, new SHA1CryptoServiceProvider(), bSign);
+		}
+
+		private RSACryptoServiceProvider rsaProvider;
+	}
+}
+
+
+HedsFile.cs
+
+using System;
+using System.Diagnostics;
+using System.IO;
+using SafeNet.Sentinel;
+
+namespace HEDS
+{
+	internal class HedsFile
+	{
+		public string CheckFile(string str)
+		{
+			string text = str;
+			if (!text.EndsWith("\\"))
+			{
+				text += "\\";
+			}
+			text += this.strFileName;
+			string text2;
+			if (File.Exists(text))
+			{
+				text2 = text;
+			}
+			else
+			{
+				text2 = null;
+			}
+			return text2;
+		}
+
+		public string FindFile()
+		{
+			try
+			{
+				string text = this.CheckFile(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName));
+				if (text != null)
+				{
+					return text;
+				}
+				text = this.CheckFile(Path.GetFullPath(Environment.CurrentDirectory));
+				if (text != null)
+				{
+					return text;
+				}
+				text = this.CheckFile(Path.GetFullPath(Environment.SystemDirectory));
+				if (text != null)
+				{
+					return text;
+				}
+				text = this.CheckFile(Path.GetFullPath(Environment.GetEnvironmentVariable("windir") + "\\system"));
+				if (text != null)
+				{
+					return text;
+				}
+				text = this.CheckFile(Path.GetFullPath(Environment.GetEnvironmentVariable("windir")));
+				if (text != null)
+				{
+					return text;
+				}
+				string[] array = Environment.GetEnvironmentVariable("path").Split(new char[] { ';' });
+				for (int i = 0; i < array.Length; i++)
+				{
+					if (array[i] != null && array[i].Length > 0)
+					{
+						text = this.CheckFile(Path.GetFullPath(array[i]));
+						if (text != null)
+						{
+							return text;
+						}
+					}
+				}
+			}
+			catch (FileNotFoundException ex)
+			{
+			}
+			return null;
+		}
+
+		public HedsFile.heds_status CheckSignature(string strFile, int iGeneration)
+		{
+			try
+			{
+				if (strFile == null)
+				{
+					return HedsFile.heds_status.HEDS_FILE_NOT_FOUND;
+				}
+				this.hedsSign = new HedsSign();
+				FileStream fileStream = new FileStream(strFile, FileMode.Open, FileAccess.Read);
+				fileStream.Seek(-4L, SeekOrigin.End);
+				BinaryReader binaryReader = new BinaryReader(fileStream);
+				int num = binaryReader.ReadInt32();
+				if (num > 0 && (long)num < fileStream.Length)
+				{
+					fileStream.Seek((long)num, SeekOrigin.Begin);
+					if (this.hedsSign.LoadSignature(fileStream))
+					{
+						int num2 = num;
+						fileStream.Seek(0L, SeekOrigin.Begin);
+						byte[] array = binaryReader.ReadBytes(num2);
+						byte[] signature = this.hedsSign.GetSignature(iGeneration);
+						if (signature != null)
+						{
+							if (this.hedsCrypt.VerifyData(array, signature))
+							{
+								return HedsFile.heds_status.HEDS_STATUS_OK;
+							}
+							return HedsFile.heds_status.HEDS_SIGNATURE_BROKEN;
+						}
+					}
+				}
+			}
+			catch (DllBrokenException)
+			{
+				return HedsFile.heds_status.HEDS_SIGNATURE_BROKEN;
+			}
+			return HedsFile.heds_status.HEDS_GENERATION_NOT_FOUND;
+		}
+
+		public string strFileName;
+
+		public HedsCrypt hedsCrypt;
+
+		private HedsSign hedsSign;
+
+		public enum heds_status
+		{
+			HEDS_STATUS_OK,
+			HEDS_SIGNATURE_BROKEN = -1,
+			HEDS_GENERATION_NOT_FOUND = -2,
+			HEDS_FILE_NOT_FOUND = -3
+		}
+	}
+}
+
+
+HedsSign.cs
+
+using System;
+using System.IO;
+
+namespace HEDS
+{
+	internal class HedsSign
+	{
+		private bool IsValidMagic()
+		{
+			return this.hdr.ulMagic == 1396983112;
+		}
+
+		public bool LoadSignature(Stream s)
+		{
+			BinaryReader binaryReader = new BinaryReader(s);
+			this.hdr.ulMagic = binaryReader.ReadInt32();
+			bool flag;
+			if (!this.IsValidMagic())
+			{
+				flag = false;
+			}
+			else
+			{
+				this.hdr.ulCount = binaryReader.ReadInt32();
+				if (this.hdr.ulCount > 16)
+				{
+					flag = false;
+				}
+				else
+				{
+					this.sign = new HedsSign.Signature[this.hdr.ulCount];
+					for (int i = 0; i < this.hdr.ulCount; i++)
+					{
+						this.sign[i] = new HedsSign.Signature();
+						this.sign[i].iGeneration = binaryReader.ReadInt32();
+						this.sign[i].iSignatureLen = binaryReader.ReadInt32();
+						this.sign[i].bSignature = new byte[this.sign[i].iSignatureLen];
+						binaryReader.Read(this.sign[i].bSignature, 0, this.sign[i].bSignature.Length);
+					}
+					flag = true;
+				}
+			}
+			return flag;
+		}
+
+		public byte[] GetSignature(int iGen)
+		{
+			for (int i = 0; i < this.hdr.ulCount; i++)
+			{
+				if (this.sign[i].iGeneration == iGen)
+				{
+					return this.sign[i].bSignature;
+				}
+			}
+			return null;
+		}
+
+		private HedsSign.Header hdr = new HedsSign.Header();
+
+		private HedsSign.Signature[] sign;
+
+		private class Header
+		{
+			public int ulMagic = 1396983112;
+
+			public int ulCount = 0;
+		}
+
+		private class Signature
+		{
+			public int iGeneration = 0;
+
+			public int iSignatureLen = 0;
+
+			public byte[] bSignature;
+		}
+	}
+}
+
+
+sntl_adminapi_net_windows.dll\sntl_adminapi_net_windows\SafeNet\Sentinel\Internal\NativeMethods32
+NativeMethods.cs
+
+using System;
+using System.Runtime.InteropServices;
+
+namespace SafeNet.Sentinel.Internal.NativeMethodsEmb32
+{
+	internal static class NativeMethods
+	{
+		[DllImport("apidsp_windows.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_context_new_scope(ref IntPtr context, [MarshalAs(UnmanagedType.LPStr)] string scope);
+
+		[DllImport("apidsp_windows.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_context_new(ref IntPtr context, [MarshalAs(UnmanagedType.LPStr)] string hostname, ushort sntl_admin_u16_t, [MarshalAs(UnmanagedType.LPStr)] string password);
+
+		[DllImport("apidsp_windows.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_context_delete(IntPtr context);
+
+		[DllImport("apidsp_windows.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_get(IntPtr context, [MarshalAs(UnmanagedType.LPStr)] string scope, [MarshalAs(UnmanagedType.LPStr)] string format, ref IntPtr info);
+
+		[DllImport("apidsp_windows.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_set(IntPtr context, [MarshalAs(UnmanagedType.LPStr)] string action, ref IntPtr return_status);
+
+		[DllImport("apidsp_windows.dll", CharSet = CharSet.Auto)]
+		internal static extern void sntl_admin_free(IntPtr info);
+
+		[DllImport("apidsp_windows.dll")]
+		internal static extern AdminStatus hasp_set_lib_path(IntPtr path);
+
+		[DllImport("apidsp_windows.dll")]
+		internal static extern AdminStatus hasp_set_lib_path(int path);
+	}
+}
+
+sntl_adminapi_net_windows.dll\sntl_adminapi_net_windows\SafeNet\Sentinel\Internal\NativeMethods64
+NativeMethods.cs
+
+using System;
+using System.Runtime.InteropServices;
+
+namespace SafeNet.Sentinel.Internal.NativeMethodsEmb64
+{
+	internal static class NativeMethods
+	{
+		[DllImport("apidsp_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_context_new_scope(ref IntPtr context, [MarshalAs(UnmanagedType.LPStr)] string scope);
+
+		[DllImport("apidsp_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_context_new(ref IntPtr context, [MarshalAs(UnmanagedType.LPStr)] string hostname, ushort sntl_admin_u16_t, [MarshalAs(UnmanagedType.LPStr)] string password);
+
+		[DllImport("apidsp_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_context_delete(IntPtr context);
+
+		[DllImport("apidsp_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_get(IntPtr context, [MarshalAs(UnmanagedType.LPStr)] string scope, [MarshalAs(UnmanagedType.LPStr)] string format, ref IntPtr info);
+
+		[DllImport("apidsp_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_set(IntPtr context, [MarshalAs(UnmanagedType.LPStr)] string action, ref IntPtr return_status);
+
+		[DllImport("apidsp_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern void sntl_admin_free(IntPtr info);
+
+		[DllImport("apidsp_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus hasp_set_lib_path(IntPtr path);
+
+		[DllImport("apidsp_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus hasp_set_lib_path(int path);
+	}
+}
+
+
+sntl_adminapi_net_windows.dll\sntl_adminapi_net_windows\SafeNet\Sentinel\Internal\NativeMethodsEmb32
+NativeMethods.cs
+
+using System;
+using System.Runtime.InteropServices;
+
+namespace SafeNet.Sentinel.Internal.NativeMethodsEmb64
+{
+	internal static class NativeMethods
+	{
+		[DllImport("apidsp_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_context_new_scope(ref IntPtr context, [MarshalAs(UnmanagedType.LPStr)] string scope);
+
+		[DllImport("apidsp_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_context_new(ref IntPtr context, [MarshalAs(UnmanagedType.LPStr)] string hostname, ushort sntl_admin_u16_t, [MarshalAs(UnmanagedType.LPStr)] string password);
+
+		[DllImport("apidsp_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_context_delete(IntPtr context);
+
+		[DllImport("apidsp_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_get(IntPtr context, [MarshalAs(UnmanagedType.LPStr)] string scope, [MarshalAs(UnmanagedType.LPStr)] string format, ref IntPtr info);
+
+		[DllImport("apidsp_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_set(IntPtr context, [MarshalAs(UnmanagedType.LPStr)] string action, ref IntPtr return_status);
+
+		[DllImport("apidsp_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern void sntl_admin_free(IntPtr info);
+
+		[DllImport("apidsp_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus hasp_set_lib_path(IntPtr path);
+
+		[DllImport("apidsp_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus hasp_set_lib_path(int path);
+	}
+}
+
+sntl_adminapi_net_windows.dll\sntl_adminapi_net_windows\SafeNet\Sentinel\Internal\NativeMethodsEmb64
+NativeMethods.cs
+
+using System;
+using System.Runtime.InteropServices;
+
+namespace SafeNet.Sentinel.Internal.NativeMethods64
+{
+	internal static class NativeMethods
+	{
+		[DllImport("sntl_adminapi_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_context_new_scope(ref IntPtr context, [MarshalAs(UnmanagedType.LPStr)] string scope);
+
+		[DllImport("sntl_adminapi_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_context_new(ref IntPtr context, [MarshalAs(UnmanagedType.LPStr)] string hostname, ushort sntl_admin_u16_t, [MarshalAs(UnmanagedType.LPStr)] string password);
+
+		[DllImport("sntl_adminapi_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_context_delete(IntPtr context);
+
+		[DllImport("sntl_adminapi_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_get(IntPtr context, [MarshalAs(UnmanagedType.LPStr)] string scope, [MarshalAs(UnmanagedType.LPStr)] string format, ref IntPtr info);
+
+		[DllImport("sntl_adminapi_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern AdminStatus sntl_admin_set(IntPtr context, [MarshalAs(UnmanagedType.LPStr)] string action, ref IntPtr return_status);
+
+		[DllImport("sntl_adminapi_windows_x64.dll", CharSet = CharSet.Auto)]
+		internal static extern void sntl_admin_free(IntPtr info);
+	}
+}
+
+
+AdminApi.cs
+
+using System;
+using HEDS;
+using SafeNet.Sentinel.Internal;
+
+namespace SafeNet.Sentinel
+{
+	[Serializable]
+	public class AdminApi
+	{
+		public AdminApi()
+		{
+		}
+
+		public AdminApi(string hostname)
+		{
+			this.m_hostname = hostname;
+		}
+
+		public AdminApi(string hostname, ushort port)
+		{
+			this.m_hostname = hostname;
+			this.m_port = port;
+		}
+
+		public AdminApi(string hostname, ushort port, string password)
+		{
+			this.m_hostname = hostname;
+			this.m_port = port;
+			this.m_password = password;
+		}
+
+		public AdminApi(VendorCodeType vendorCodeType, string hostname)
+		{
+			this.m_vendorCode = vendorCodeType;
+			this.m_hostname = hostname;
+		}
+
+		public AdminApi(VendorCodeType vendorCodeType, string hostname, ushort port)
+		{
+			this.m_vendorCode = vendorCodeType;
+			this.m_hostname = hostname;
+			this.m_port = port;
+		}
+
+		public AdminApi(VendorCodeType vendorCodeType, string hostname, ushort port, string password)
+		{
+			this.m_vendorCode = vendorCodeType;
+			this.m_hostname = hostname;
+			this.m_port = port;
+			this.m_password = password;
+		}
+
+		public AdminStatus connect()
+		{
+			if (this.m_adminApiDsp != null)
+			{
+				this.m_connected = false;
+				this.m_adminApiDsp.sntl_admin_context_delete();
+				this.m_adminApiDsp = null;
+			}
+			this.m_adminApiDsp = new AdminApiDsp();
+			AdminStatus adminStatus;
+			if (this.m_adminApiDsp.setVendorCodeFlag(this.m_vendorCode != null))
+			{
+				if (this.m_searchPath != null)
+				{
+					this.m_adminApiDsp.setLibPath(this.m_searchPath);
+					this.m_adminApiDsp.setLibPathApiDsp(this.m_searchPath);
+				}
+				adminStatus = this.m_adminApiDsp.sntl_admin_context_new_scope(this.getScopeTemplate(this.m_vendorCode, this.m_password, this.m_hostname, this.m_port));
+			}
+			else
+			{
+				if (this.m_searchPath != null)
+				{
+					this.m_adminApiDsp.setLibPath(this.m_searchPath);
+				}
+				adminStatus = this.m_adminApiDsp.sntl_admin_context_new(this.m_hostname, this.m_port, this.m_password);
+			}
+			if (adminStatus == AdminStatus.StatusOk)
+			{
+				this.m_connected = true;
+			}
+			return adminStatus;
+		}
+
+		public AdminStatus connect(string hostname, ushort port, string password)
+		{
+			this.m_vendorCode.clear();
+			this.m_hostname = hostname;
+			this.m_port = port;
+			this.m_password = password;
+			return this.connect();
+		}
+
+		public AdminStatus connect(VendorCodeType vendorCode, string hostname, ushort port, string password)
+		{
+			this.m_vendorCode = vendorCode;
+			this.m_hostname = hostname;
+			this.m_port = port;
+			this.m_password = password;
+			return this.connect();
+		}
+
+		public AdminStatus adminGet(string scope, string format, ref string info)
+		{
+			AdminStatus adminStatus = AdminStatus.ConnectMissing;
+			if (this.m_connected)
+			{
+				adminStatus = this.m_adminApiDsp.sntl_admin_get(scope, format, ref info);
+			}
+			return adminStatus;
+		}
+
+		public AdminStatus adminSet(string action, ref string return_status)
+		{
+			AdminStatus adminStatus = AdminStatus.ConnectMissing;
+			if (this.m_connected)
+			{
+				adminStatus = this.m_adminApiDsp.sntl_admin_set(action, ref return_status);
+			}
+			return adminStatus;
+		}
+
+		public void SetLibPath(string path)
+		{
+			if (path != null)
+			{
+				string text = path;
+				if (!text.EndsWith("\\"))
+				{
+					text += "\\";
+				}
+				this.m_searchPath = text;
+			}
+			else
+			{
+				this.m_searchPath = path;
+			}
+		}
+
+		private static void TestSignature()
+		{
+			if (AdminApiDsp.isRunningOnMono() <= 0)
+			{
+				if (!AdminApi.tested)
+				{
+					HedsCrypt hedsCrypt = new HedsCrypt();
+					hedsCrypt.Init("<RSAKeyValue>  <Modulus>tPkMcaY3CO1MlQp+hShdu1MWrOkisuRmubklR4cxQt9JM1i6wPooMkeRXu62u/JyUk           IEe4Y45JFCZL5/dOBirs7dyMBM+a0umaANRQE1wvr+k7uQyXuTo8dNwFlZR4WShBD2           O/gv/QMfgYuJ0nm5P0IFGjJrx+K6oiMrRLBcg5E=  </Modulus><Exponent>AQAB</Exponent></RSAKeyValue>");
+					HedsFile hedsFile = new HedsFile();
+					hedsFile.hedsCrypt = hedsCrypt;
+					int size = IntPtr.Size;
+					string text;
+					if (size != 4)
+					{
+						if (size != 8)
+						{
+							throw new PlatformNotSupportedException();
+						}
+						text = "apidsp_windows_x64.dll";
+					}
+					else
+					{
+						text = "apidsp_windows.dll";
+					}
+					hedsFile.strFileName = text;
+					HedsFile.heds_status heds_status = hedsFile.CheckSignature(hedsFile.FindFile(), 1);
+					if (heds_status != HedsFile.heds_status.HEDS_STATUS_OK)
+					{
+						throw new DllBrokenException(heds_status.ToString());
+					}
+					AdminApi.tested = true;
+				}
+			}
+		}
+
+		private string getScopeTemplate(VendorCodeType vct, string password, string hostname, ushort port)
+		{
+			string text = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><haspscope><vendor_code>" + vct.ToString() + "</vendor_code>";
+			text = text + "<host>" + hostname + "</host>";
+			if (port != 0)
+			{
+				text = string.Concat(new object[] { text, "<port>", port, "</port>" });
+			}
+			if (password.Length > 0)
+			{
+				text = text + "<password>" + password + "</password>";
+			}
+			return text + "</haspscope>";
+		}
+
+		~AdminApi()
+		{
+			this.m_adminApiDsp.sntl_admin_context_delete();
+		}
+
+		private string m_hostname = "";
+
+		private string m_password = "";
+
+		private ushort m_port = 0;
+
+		private bool m_connected = false;
+
+		private VendorCodeType m_vendorCode = null;
+
+		private AdminApiDsp m_adminApiDsp = null;
+
+		private string m_searchPath = null;
+
+		private static bool tested;
+	}
+}
+
+
+AdminApiDsp.cs
+
+using System;
+
+namespace SafeNet.Sentinel.Internal
+{
+	internal class AdminApiDsp
+	{
+		private IAdminApiDsp getApiFactory()
+		{
+			if (this.adminApiDsp == null)
+			{
+				if (AdminApiDsp.isRunningOnMono() == 0 && AdminApiDsp.isSystemArchWin32())
+				{
+					if (this.isVendorCodePresent)
+					{
+						this.adminApiDsp = new AdminApiDspEmb32();
+					}
+					else
+					{
+						this.adminApiDsp = new AdminApiDspWin32();
+					}
+				}
+				else if (this.isVendorCodePresent)
+				{
+					this.adminApiDsp = new AdminApiDspEmb64();
+				}
+				else
+				{
+					this.adminApiDsp = new AdminApiDspWin64();
+				}
+			}
+			return this.adminApiDsp;
+		}
+
+		internal static int isRunningOnMono()
+		{
+			int num = 1;
+			if (Environment.OSVersion.ToString().IndexOf("Windows") >= 0)
+			{
+				num = 0;
+			}
+			else
+			{
+				string text = Environment.OSVersion.ToString();
+				int num2 = text.IndexOf('.');
+				int num3 = text.IndexOf(' ');
+				if (num2 >= 0 && num3 >= 0)
+				{
+					string text2 = text.Substring(num3, num2 - num3);
+					int num4 = int.Parse(text2);
+					if (num4 >= 4)
+					{
+						num = 2;
+					}
+				}
+			}
+			return num;
+		}
+
+		private static bool isSystemArchWin32()
+		{
+			return IntPtr.Size == 4;
+		}
+
+		internal AdminStatus sntl_admin_context_new_scope(string scope)
+		{
+			return this.getApiFactory().sntl_admin_context_new_scope(scope);
+		}
+
+		internal AdminStatus sntl_admin_context_new(string hostname, ushort port, string password)
+		{
+			return this.getApiFactory().sntl_admin_context_new(hostname, port, password);
+		}
+
+		internal AdminStatus sntl_admin_context_delete()
+		{
+			return this.getApiFactory().sntl_admin_context_delete();
+		}
+
+		internal AdminStatus sntl_admin_set(string action, ref string return_status)
+		{
+			return this.getApiFactory().sntl_admin_set(action, ref return_status);
+		}
+
+		internal AdminStatus sntl_admin_get(string scope, string format, ref string info)
+		{
+			return this.getApiFactory().sntl_admin_get(scope, format, ref info);
+		}
+
+		internal bool setVendorCodeFlag(bool p)
+		{
+			this.isVendorCodePresent = p;
+			return this.isVendorCodePresent;
+		}
+
+		internal void setLibPath(string path)
+		{
+			AdminHelper.SetDllDirectory(path);
+		}
+
+		internal void setLibPathApiDsp(string path)
+		{
+			this.getApiFactory().setLibPath(path);
+		}
+
+		private IAdminApiDsp adminApiDsp;
+
+		private bool isVendorCodePresent = false;
+	}
+}
+
+
+IAdminApiDsp.cs
+
+using System;
+namespace SafeNet.Sentinel.Internal
+{
+	internal interface IAdminApiDsp
+	{
+		AdminStatus sntl_admin_context_new_scope(string scope);
+
+		AdminStatus sntl_admin_context_new(string hostname, ushort port, string password);
+
+		AdminStatus sntl_admin_context_delete();
+
+		AdminStatus sntl_admin_get(string scope, string format, ref string info);
+
+		AdminStatus sntl_admin_set(string action, ref string return_status);
+
+		void setLibPath(string path);
+	}
+}
+
+AdminStatus.cs
+
+using System;
+
+namespace SafeNet.Sentinel
+{
+	public enum AdminStatus
+	{
+		StatusOk,
+		InsufMem = 3,
+		InvalidContext = 6001,
+		LmNotFound,
+		LmTooOld,
+		BadParameters,
+		LocalNetWorkError,
+		CannotReadFile,
+		ScopeError,
+		PasswordRequired,
+		CannotSetPassword,
+		UpdateError,
+		LocalOnly,
+		BadValue,
+		ReadOnly,
+		ElementUndefined,
+		InvalidPointer,
+		NoIntegratedLm,
+		ResultTooBig,
+		ScopeResultsEmpty = 6019,
+		InvalidVendorCode = 6022,
+		UnknownVendorCode = 6034,
+		ConnectMissing = 6051,
+		DotNetDllBroken
+	}
+}
+
+sntl_admin_error_codes.cs
+
+using System;
+
+namespace SafeNet.Sentinel
+{
+	public enum sntl_admin_error_codes
+	{
+		SNTL_ADMIN_STATUS_OK,
+		SNTL_ADMIN_INSUF_MEM = 3,
+		SNTL_ADMIN_INVALID_CONTEXT = 6001,
+		SNTL_ADMIN_LM_NOT_FOUND,
+		SNTL_ADMIN_LM_TOO_OLD,
+		SNTL_ADMIN_BAD_PARAMETERS,
+		SNTL_ADMIN_LOCAL_NETWORK_ERR,
+		SNTL_ADMIN_CANNOT_READ_FILE,
+		SNTL_ADMIN_SCOPE_ERROR,
+		SNTL_ADMIN_PASSWORD_REQUIRED,
+		SNTL_ADMIN_CANNOT_SET_PASSWORD,
+		SNTL_ADMIN_UPDATE_ERROR,
+		SNTL_ADMIN_LOCAL_ONLY,
+		SNTL_ADMIN_BAD_VALUE,
+		SNTL_ADMIN_READ_ONLY,
+		SNTL_ADMIN_ELEMENT_UNDEFINED,
+		SNTL_ADMIN_INVALID_PTR,
+		SNTL_ADMIN_NO_INTEGRATED_LM,
+		SNTL_ADMIN_RESULT_TOO_BIG,
+		SNTL_ADMIN_SCOPE_RESULTS_EMPTY = 6019,
+		SNTL_ADMIN_INV_VCODE = 6022,
+		SNTL_ADMIN_UNKNOWN_VCODE = 6034,
+		SNTL_ADMIN_CONNECT_MISSING = 6051,
+		SNTL_ADMIN_NET_DLL_BROKEN
+	}
+}
+
+DllBrokenException.cs
+
+using System;
+using System.Runtime.Serialization;
+
+namespace SafeNet.Sentinel
+{
+	public class DllBrokenException : Exception
+	{
+		public DllBrokenException()
+		{
+		}
+
+		public DllBrokenException(string message)
+			: base(message)
+		{
+		}
+
+		public DllBrokenException(string message, Exception ex)
+			: base(message, ex)
+		{
+		}
+
+		protected DllBrokenException(SerializationInfo serInfo, StreamingContext streamContext)
+			: base(serInfo, streamContext)
+		{
+		}
+	}
+}
+
+VendorCodeType.cs
+
+using System;
+
+namespace SafeNet.Sentinel
+{
+	[Serializable]
+	public class VendorCodeType
+	{
+		private VendorCodeType()
+		{
+		}
+
+		public VendorCodeType(string vendorCode)
+		{
+			this.m_vendorCode = vendorCode;
+		}
+
+		public override string ToString()
+		{
+			return this.m_vendorCode;
+		}
+
+		public void clear()
+		{
+			this.m_vendorCode = "";
+		}
+
+		private string m_vendorCode;
+	}
+}
+
+sntl_admin_context_t.cs
+
+using System;
+using System.Runtime.InteropServices;
+
+namespace SafeNet.Sentinel
+{
+	internal struct sntl_admin_context_t
+	{
+		private ushort lm_version_major;
+
+		private ushort lm_version_minor;
+
+		private ushort lm_http_status;
+
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+		public string lm_server_str;
+
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1024)]
+		private string address;
+
+		private ushort port;
+
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1024)]
+		private string password;
+
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1024)]
+		private string password_hash;
+	}
+}
+
+Properties/AssemblyInfo.cs
+
+using System;
+using System.Diagnostics;
+using System.Reflection;
+using System.Resources;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.Security.Permissions;
+
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyDescription("mscorlib.dll")]
+[assembly: CLSCompliant(true)]
+[assembly: AssemblyDefaultAlias("mscorlib.dll")]
+[assembly: AssemblyTitle("mscorlib.dll")]
+[assembly: AllowPartiallyTrustedCallers]
+[assembly: ComVisible(false)]
+[assembly: AssemblyKeyFile("f:\\dd\\Tools\\devdiv\\EcmaPublicKey.snk")]
+[assembly: AssemblyCompany("Microsoft Corporation")]
+[assembly: StringFreezing]
+[assembly: DefaultDependency(LoadHint.Always)]
+[assembly: TypeLibVersion(2, 0)]
+[assembly: ComCompatibleVersion(1, 0, 3300, 0)]
+[assembly: Guid("BED7F4EA-1A96-11d2-8F08-00A0C9A6186D")]
+[assembly: AssemblyDelaySign(true)]
+[assembly: NeutralResourcesLanguage("en-US")]
+[assembly: SatelliteContractVersion("2.0.0.0")]
+[assembly: AssemblyInformationalVersion("2.0.50727.9179")]
+[assembly: AssemblyFileVersion("2.0.50727.9179")]
+[assembly: AssemblyCopyright("© Microsoft Corporation.  All rights reserved.")]
+[assembly: AssemblyProduct("Microsoft® .NET Framework")]
+[assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]

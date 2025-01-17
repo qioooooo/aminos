@@ -1,0 +1,33 @@
+ triFixAlmSndCyl
+
+根据对  triFixAlmSndCyl 目录下所有文件夹的功能总结，这里是该目录的整体功能概述：
+
+程序集元数据和配置信息：通过 Properties 文件夹中的 AssemblyInfo.cs 文件定义程序集的元数据和配置信息。
+
+DLL文件检查和加载：通过 modDllChk.cs 文件检查和加载DLL文件。
+
+全局变量和常量支持：通过 modpublic.cs 文件定义各种全局变量和常量。
+
+界面设计和逻辑处理：包括 frmAbout、frmDelCache 等文件处理用户界面的设计和逻辑实现。
+
+管理声音播放：通过 clsPlaySound.cs 实现，包括播放声音文件和使用文本转语音。
+
+与 iFix 交互：通过 clsiFix.cs 实现，包括在 iFix 工作区中打开图片文件。
+
+处理 SCADA 节点和标签：通过 clsEDA.cs 实现，包括检索节点和标签列表。
+
+应用程序信息和缓存管理：通过 frmAbout.cs 和 frmDelCache.cs 实现。
+
+应用程序启动和配置：通过 MyApplication.cs 和 app.manifest 实现，定义了应用程序的入口点、清单信息和主窗体管理。
+
+计算机相关功能：通过 MyComputer.cs 扩展 Microsoft.VisualBasic.Devices.Computer 类。
+
+全局对象访问：通过 MyProject.cs 提供对应用程序对象（如计算机、应用程序、用户、窗体和 Web 服务）的访问。
+
+应用程序设置管理：通过 MySettings.Designer.cs 和 MySettingsProperty.cs 实现，包括管理设置和配置。
+
+访问应用程序资源：通过 Resources.cs 实现，管理资源管理器和文化信息。
+
+程序集属性信息：通过 Properties 文件夹内的 AssemblyInfo.cs 实现，包括版本信息、描述、标题、安全权限、公司和产品信息等。
+
+综上所述， triFixAlmSndCyl 目录的整体功能集中在应用程序的启动和配置管理、声音播放、与 iFix 和 SCADA 的交互、应用程序信息和缓存管理、以及资源和设置的管理。

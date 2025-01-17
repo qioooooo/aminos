@@ -1,0 +1,310 @@
+hasp_net_windows 文件夹功能总结
+hasp_net_windows 文件夹包含了多个子文件夹和文件，这些文件和文件夹主要用于与 HASP 设备进行交互、数据保护、以及程序集的元数据管理。以下是对各个文件夹功能的总结：
+
+1. Aladdin/HASP/Internal/NativeMethods32 文件夹
+功能：包含与 HASP 设备交互的原生方法定义，通过调用 apidsp_windows.dll 和 kernel32.dll 中的函数，实现设备登录登出、数据加解密、数据读写、信息查询、版本管理和设备更新配置等功能。
+2. Aladdin/HASP/Internal/NativeMethods64 文件夹
+功能：与 NativeMethods32 文件夹类似，包含与 HASP 设备交互的原生方法定义，不过更适用于 64 位 Windows 平台。
+3. Aladdin/HASP/Internal/NativeMethodsDarwin 文件夹
+功能：包含适用于 macOS 平台的 HASP 设备交互的原生方法定义，通过调用 apidsp_darwin.dylib 实现设备登录登出、数据加解密、数据读写、信息查询、版本管理和设备更新配置等功能。
+4. Aladdin/HASP/Internal/NativeMethodsLinux32 文件夹
+功能：包含适用于 32 位 Linux 平台的 HASP 设备交互的原生方法定义，通过调用 apidsp_linux.so 实现设备登录登出、数据加解密、数据读写、信息查询、版本管理和设备更新配置等功能。
+5. Aladdin/HASP/Internal/NativeMethodsLinux64 文件夹
+功能：包含适用于 64 位 Linux 平台的 HASP 设备交互的原生方法定义，通过调用 apidsp_linux_x64.so 实现设备登录登出、数据加解密、数据读写、信息查询、版本管理和设备更新配置等功能。
+6. Aladdin/HASP/Internal 文件夹
+功能：包含与 HASP 设备交互的 API 封装类和分发器类，通过封装底层的原生方法，提供了一致的 API 接口，方便应用程序在不同平台上与 HASP 设备进行交互。
+7. Aladdin/HASP 文件夹
+功能：包含与 HASP 设备交互的核心 API 类和辅助类，包括登录登出、读取写入、加密解密、特性管理、文件管理、会话管理和错误处理等功能。
+8. HEDS 文件夹
+功能：包含与数据保护相关的核心功能类，提供了加密、解密、文件操作和数字签名等功能，实现数据的机密性、完整性和真实性保护。
+9. Properties 文件夹
+功能：包含程序集的元数据信息文件，如 AssemblyInfo.cs，用于定义和存储程序集的版本号、公司名称、产品名称、版权信息等元数据信息，帮助管理和维护程序集。
+总结
+hasp_net_windows 文件夹整体上提供了与 HASP 设备进行交互的全面解决方案，包括跨平台的设备登录登出、数据加密解密、数据读写和信息查询等功能。同时，还包含了数据保护的核心功能类和程序集元数据管理文件，确保程序的安全性、可靠性和可维护性。通过这些功能，开发者可以方便地在应用程序中集成 HASP 设备的相关功能，实现对 HASP 设备的全面访问和操作。
+
+确保应用程序在不同的区域和语言环境中正常运行。
+ mscorlib 文件夹功能总结
+ mscorlib 文件夹包含了大量与核心系统功能、集合操作、全球化支持、输入输出操作、远程处理、互操作性、权限管理和安全控制、加密、序列化、线程管理等相关的类和接口。这些文件提供了广泛的功能，涵盖了从基本的系统操作到高级的元编程、动态类型创建、远程对象通信和数据序列化等多个方面。以下是对该文件夹功能的总结：
+
+核心系统功能：
+
+提供了基本数据类型、类型转换和格式化、异常处理、日期和时间操作、数学运算、字符串处理、反射和类型信息、多线程支持、安全和访问控制、垃圾回收和内存管理等核心功能（如 Boolean、Convert、Exception、DateTime、Math、String、Type、Thread、GC 等）。
+集合操作：
+
+提供了泛型和非泛型集合的支持，包括数组、列表、字典、集合等数据结构，以及相关的排序、比较和调试功能（如 ArrayList、Dictionary、Comparer 等）。
+全球化和区域化支持：
+
+提供了处理不同文化、日历、区域、编码和字符串比较等功能的支持，确保系统能够正确处理国际化文本和字符集（如 CultureInfo、Calendar、RegionInfo、Encoding 等）。
+输入输出操作：
+
+提供了文件和流操作的支持，包括文件和目录的创建、读取、写入、删除，流的读写操作，以及各种I/O相关的错误处理（如 File、Directory、Stream、FileStream、MemoryStream 等）。
+调试和日志记录：
+
+提供了丰富的调试功能，包括断言、条件编译、调试器交互、堆栈跟踪、日志记录等（如 Assert、Debugger、StackTrace、Log 等）。
+缓存机制：
+
+提供了内部缓存的功能，支持缓存操作的定义、缓存对象的类型、缓存事件的处理以及缓存项的存储和管理（如 CacheAction、InternalCache 等）。
+反射发射（Reflection Emit）：
+
+提供了动态创建和操作程序集、模块、类型、方法、字段、属性、事件等功能，支持在运行时生成和发出IL代码（如 AssemblyBuilder、DynamicMethod、ILGenerator、TypeBuilder 等）。
+资源管理：
+
+提供了资源的读取、写入、管理和定位功能，支持应用程序的本地化和多语言支持（如 ResourceManager、ResourceReader、ResourceWriter 等）。
+编译器服务：
+
+提供了编译器和运行时之间的交互功能，支持编译器生成的属性、编译器指令和选项、调用约定、依赖和加载提示等（如 CompilerGeneratedAttribute、MethodImplAttribute、RuntimeHelpers 等）。
+远程处理：
+
+包含了与远程对象激活、通信、上下文管理、生命周期管理、消息传递和代理创建相关的功能，支持分布式应用程序的构建和管理（如 RemotingServices、IMessage、MethodCall、Lease、RealProxy 等）。
+互操作性：
+
+提供了与COM互操作和平台调用（PInvoke）相关的功能，支持托管代码与非托管代码之间的互操作（如 DllImportAttribute、Marshal、ComVisibleAttribute、SafeHandle 等）。
+权限管理和安全控制：
+
+提供了管理和控制系统资源的访问权限和审核规则，确保系统资源的安全性和访问控制的严格性（如 CodeAccessPermission、PermissionSet、SecurityManager、PolicyManager 等）。
+加密和解密：
+
+提供了对称加密、非对称加密、哈希算法、密钥管理等功能，确保数据的安全性和完整性（如 RSA、DSA、DES、TripleDES、SHA256、HMAC 等）。
+序列化和反序列化：
+
+提供了对象的序列化和反序列化功能，支持对象在不同环境之间的传输和存储（如 BinaryFormatter、SoapType、SerializationInfo 等）。
+线程管理和同步：
+
+提供了线程创建和管理、线程同步、线程池、定时器、执行上下文、同步上下文、压缩堆栈、重叠I/O等功能，确保多线程应用程序的高效、安全运行（如 Thread、ThreadPool、Timer、Monitor、Mutex 等）。
+通过这些类和接口，开发者可以高效地处理系统核心功能、集合操作、全球化支持、输入输出操作、调试和日志记录、缓存机制、动态类型创建、远程处理、互操作性、权限管理和安全控制、加密和解密、序列化和反序列化、线程管理等需求，确保应用程序的高效、安全和稳定运行。这些功能为开发复杂的、跨平台的、具有国际化支持的应用程序提供了坚实的基础。
+
+ System 文件夹功能总结
+ System 文件夹包含了一系列与系统、网络、安全、组件模型、设计时组件、配置管理、诊断、数据压缩、串行端口通信、文件系统、音频播放等相关的功能模块。以下是对各子文件夹及其功能的总结：
+
+ System/CodeDom 和  System/CodeDom/Compiler：
+
+功能：提供代码编译、生成、解析、验证等功能，支持开发者以编程方式生成和操作代码结构。
+ System/Collections/Generic 和  System/Collections/Specialized：
+
+功能：包含常见的数据结构和集合操作的实现，如链表、队列、栈、排序字典、字符串集合、混合字典等。
+ System/ComponentModel/Design 和  System/ComponentModel/Design/Serialization：
+
+功能：提供设计时环境的管理、事件处理、命令与事务管理、组件和对象的序列化功能。
+ System/ComponentModel：
+
+功能：支持属性、事件、类型转换、异步操作等功能，用于管理和操作组件模型。
+ System/Configuration 和  System/Configuration/Internal：
+
+功能：提供应用程序配置管理的类和接口，用于读取、写入和管理配置设置。
+ System/Diagnostics：
+
+功能：包含日志记录、事件日志、性能计数器、进程管理、调试等功能的类和接口。
+ System/IO/Compression：
+
+功能：提供数据压缩和解压缩的功能，实现了各种压缩算法和技术。
+ System/IO/Ports：
+
+功能：包含串行端口通信的数据传输、事件处理和配置的类和接口。
+ System/IO：
+
+功能：提供监视文件系统更改、处理错误事件、描述 I/O 操作的功能。
+ System/Media：
+
+功能：包含播放音频文件和系统声音的类。
+ System/Microsoft/CSharp 和  System/Microsoft/VisualBasic：
+
+功能：包含生成和编译 C# 和 VB 代码的类，处理代码生成和属性转换。
+ System/Microsoft/Win32 和  System/Microsoft/Win32/SafeHandles：
+
+功能：包含处理系统事件、会话管理、用户偏好和与系统原生方法交互的类和委托。
+ System/Net、 System/Net/Cache、 System/Net/Configuration、 System/Net/Mail、 System/Net/Mime、 System/Net/NetworkInformation、 System/Net/Security 和  System/Net/Sockets：
+
+功能：包括网络请求和响应缓存、配置管理、邮件处理、MIME 类型处理、网络信息、网络安全通信和套接字操作的类和接口。
+ System/Security/AccessControl 和  System/Security/Permissions：
+
+功能：包含与信号量安全性、存储权限及其属性、资源权限控制相关的类和枚举。
+ System/Security/Cryptography 和  System/Security/Cryptography/X509Certificates：
+
+功能：包含处理加密操作、证书管理、通道绑定、保护策略等功能的类和枚举。
+ System/Text/RegularExpressions：
+
+功能：包含处理正则表达式匹配、捕获、编译等功能的类和枚举。
+ System/Threading：
+
+功能：包含与线程和同步相关的类和异常定义，提供线程同步和异常处理的支持。
+ System/Timers：
+
+功能：提供定时器功能的类和委托定义，支持在应用程序中使用定时器进行时间间隔触发操作。
+ System/Web：
+
+功能：提供在 ASP.NET 应用程序中管理和控制宿主环境权限的机制，确保应用程序的安全性和权限控制。
+URI解析器和网络辅助：
+
+功能：提供不同类型的 URI 解析器以及处理域名和 IPv4 地址的工具方法。
+安全工具和程序集信息：
+
+功能：提供创建实例和调用构造函数的安全工具方法、存储程序集的公共密钥、名称和版本号等信息。
+通过以上这些功能模块， System 文件夹为系统提供了全面的基础设施支持，涵盖了从代码生成、集合操作、设计时组件、配置管理、诊断监控到网络通信、安全管理、加密操作和权限控制等各个方面，确保系统能够高效、可靠地运行和管理。
+
+ System.Security 文件夹功能总结
+该文件夹包含与安全性操作相关的多个子文件夹和文件，涵盖了加密操作、证书管理、XML 安全性、权限管理等方面。以下是对每个子文件夹和主要文件的功能总结，并结合这些内容总结出整个文件夹的功能。
+
+ System.Security/Cryptography/Pkcs 文件夹功能总结
+该文件夹包含与 PKCS（Public-Key Cryptography Standards）相关的类和接口，主要用于处理证书管理、加密、解密、签名和验证操作。
+
+主要功能：
+加密和解密：通过 EnvelopedCms 类提供封装的 CMS 消息加密和解密功能。
+签名和验证：通过 SignedCms 类提供签名和验证 CMS 消息的功能。
+证书和收件人管理：通过 CmsRecipient、RecipientInfo 等类管理 CMS 消息的收件人和证书信息。
+属性和类型管理：通过 AlgorithmIdentifier、Pkcs9AttributeObject 等类定义和管理加密算法标识符和 PKCS 属性。
+实用工具支持：通过 PkcsUtils 类提供各种实用工具方法支持 PKCS 操作。
+ System.Security/Cryptography/X509Certificates 文件夹功能总结
+该文件夹包含与 X.509 证书管理相关的类和接口，主要用于处理证书的显示、选择和实用工具方法。
+
+主要功能：
+证书显示和选择：通过 X509Certificate2UI 类提供用于显示证书属性和选择证书的用户界面功能。
+证书选择标志：通过 X509SelectionFlag 枚举定义证书选择行为。
+实用工具方法：通过 X509Utils 类提供用于处理证书相关操作的各种辅助方法。
+ System.Security/Cryptography/Xml 文件夹功能总结
+该文件夹包含与 XML 加密和签名相关的类和接口，主要用于处理 XML 数据的加密、解密、签名和验证操作，以及 XML 数据的规范化和处理。
+
+主要功能：
+XML 数据加密和解密：通过 EncryptedXml、EncryptedData 等类提供加密和解密 XML 数据的功能。
+数字签名和验证：通过 SignedXml、Signature 等类提供对 XML 数据进行数字签名和验证的功能。
+XML 规范化：通过 CanonicalXml 及其相关类提供对 XML 数据进行规范化处理的功能。
+证书和密钥管理：通过 KeyInfo 等类提供管理证书和密钥信息的功能。
+变换处理：通过 Transform 等类提供对 XML 数据进行各种变换处理的功能。
+实用工具支持：通过 Utils 类提供各种实用工具方法支持 XML 数据的加密、解密、签名和验证操作。
+ System.Security/Cryptography 文件夹功能总结
+该文件夹包含与加密操作相关的类和接口，主要用于处理大整数运算、加密属性对象、数据保护以及与 CAPI（Cryptographic Application Programming Interface）相关的操作和安全句柄管理。
+
+主要功能：
+大整数运算：通过 BigInt 类提供大整数运算支持。
+CAPI 操作：通过多个 CAPI 相关类 (CAPI.cs, CAPIBase.cs, CAPIMethods.cs, CAPINative.cs, CAPISafe.cs, CAPIUnsafe.cs) 封装 CAPI 操作。
+加密属性对象管理：通过 CryptographicAttributeObject 及其相关类管理加密属性对象。
+数据保护和内存保护：通过 ProtectedData 和 ProtectedMemory 类提供数据和内存保护功能。
+安全句柄管理：通过多个安全句柄类 (SafeCertChainHandle, SafeCertContextHandle, SafeCertStoreHandle, SafeCryptMsgHandle, SafeCryptProvHandle, SafeLocalAllocHandle) 管理加密操作相关的安全句柄。
+ System.Security/Permissions 文件夹功能总结
+该文件夹包含与数据保护权限相关的类和接口，主要用于处理和管理应用程序中的数据保护权限。
+
+主要功能：
+数据保护权限管理：通过 DataProtectionPermission 类管理数据保护权限。
+数据保护权限属性：通过 DataProtectionPermissionAttribute 类声明和检查数据保护权限。
+数据保护权限标志：通过 DataProtectionPermissionFlags 枚举定义不同类型的数据保护操作权限。
+ System.Security/Properties 文件夹功能总结
+该文件夹主要包含与程序集相关的元数据文件。
+
+主要功能：
+元数据定义：通过 AssemblyInfo 文件定义程序集的元数据，包括标题、描述、版本信息、公司名称等。
+ System.Security 文件夹功能总结
+该文件夹包含与安全性相关的类和资源，主要用于处理安全性操作和资源管理。
+
+主要功能：
+安全性资源管理：通过 SecurityResources 类管理安全性相关资源，支持本地化和多语言。
+本地化资源：通过 resources 文件夹提供多语言和本地化支持。
+整体总结
+ System.Security 文件夹整体功能主要用于实现和管理系统的安全性操作，包括加密、解密、签名、验证、证书管理、权限管理、数据保护和本地化资源管理等方面。通过这些类和接口，开发者可以实现以下功能：
+
+加密和解密：支持对称和非对称加密算法，提供数据和内存保护。
+数字签名和验证：支持对 XML 数据和 CMS 消息的数字签名和验证。
+证书管理：管理 X.509 证书的显示、选择和相关操作。
+数据保护权限管理：定义和检查应用程序中的数据保护权限，确保操作符合安全要求。
+安全性资源管理：支持本地化和多语言的安全性资源管理。
+这些功能对于确保系统的安全性和数据保护至关重要，确保系统能够高效、可靠地进行各种安全性操作。通过这些类和接口，开发者可以更好地管理和扩展安全性框架，提升系统的安全性、可扩展性和用户体验。
+
+ System.Configuration 文件夹包含一系列与配置系统相关的文件和类，这些文件和类主要用于管理和处理应用程序的配置。以下是该文件夹中主要文件和类的功能总结：
+
+属性和元数据管理：
+
+AssemblyInfo.cs：包含程序集的元数据，如版本、标题、公司信息等。
+外部 DLL 管理：
+
+ExternDll.cs：定义常量表示常用的 Windows DLL 文件的名称，用于 P/Invoke 调用。
+HRESULT 错误代码管理：
+
+HResults.cs：定义各种 HRESULT 错误代码常量，用于表示不同类型的错误和状态。
+配置系统核心类：
+
+ConfigSystem.cs：实现 IConfigSystem 接口，用于初始化和管理配置系统的根和主机。
+提供者模式实现：
+
+ProviderBase.cs：定义一个抽象类 ProviderBase，用于实现提供者模式，支持可插拔的组件设计。
+具体配置管理类：
+
+其他多个文件（如 AppSettingsSection.cs，BaseConfigurationRecord.cs，Configuration.cs 等）：实现和管理各种具体的配置功能，如应用程序设置、配置记录、配置节等。
+主要功能总结
+元数据管理：通过 AssemblyInfo.cs 文件定义程序集的基本信息和属性。
+外部 DLL 调用支持：通过 ExternDll.cs 文件定义常用的 DLL 名称，用于 P/Invoke 调用。
+错误代码管理：通过 HResults.cs 文件定义各种 HRESULT 错误代码，用于错误处理和报告。
+配置系统初始化和管理：通过 ConfigSystem.cs 文件实现配置系统的初始化和管理。
+提供者模式支持：通过 ProviderBase.cs 文件实现提供者模式，支持可插拔的组件设计。
+具体配置功能实现：通过多个文件实现和管理各种具体的配置功能，如应用程序设置、配置记录、配置节等。
+这些文件和类共同构成了一个完整的配置系统，支持应用程序的配置管理、错误处理和外部 DLL 调用等功能。如果你有任何具体的文件或功能需要进一步了解，请告诉我！
+
+文件夹功能总结
+ System.Data.SqlXml 文件夹主要负责处理与 XML 数据和 XSLT 相关的各种操作，包括资源管理、本地化支持、中间语言生成和优化、查询中间语言（QIL）节点操作、XSLT 运行时管理、XPath 表达式解析、XSLT 样式表编译和执行、调试支持等。其主要功能包括：
+
+资源管理和本地化支持：
+
+通过 Utils 文件夹内的类和资源文件，提供多语言环境下的本地化字符串和描述，支持线程安全的资源访问和管理。
+中间语言（IL）生成和优化：
+
+通过 Xsl/IlGen 文件夹内的类，生成和优化中间语言代码，以支持 XSLT 转换的编译和执行，提供构造方法管理、元素和状态分析、方法和模块管理、优化管理等功能。
+查询中间语言（QIL）节点操作：
+
+通过 Xsl/Qil 文件夹内的类，处理查询中间语言的节点操作和管理，支持节点定义和操作、函数和调用管理、迭代器和循环管理、验证和优化、序列化和反序列化。
+XSLT 运行时管理：
+
+通过 Xsl/Runtime 文件夹内的类，管理 XSLT 运行时的各种操作，提供迭代器实现、聚合和格式化、排序和比较、属性和内容管理、XPath 支持、查询和扩展函数、XSLT 类型转换和函数库的实现。
+XPath 表达式解析和构建：
+
+通过 Xsl/XPath 文件夹内的类，解析和构建 XPath 表达式，提供接口定义、词法分析、解析和构建、异常处理、运算符和轴的管理。
+XSLT 样式表编译和执行：
+
+通过 Xsl/Xslt 文件夹内的类，编译、解析和执行 XSLT 样式表，管理抽象语法树（AST）创建和分析、编译和解析、模式和模板管理、函数和变量管理、输出和排序、命名空间和键管理、脚本和扩展、QIL 表达式生成。
+旧版 XSLT 动作和事件处理：
+
+通过 Xsl/XsltOld 文件夹内的类，处理旧版 XSLT 的动作和事件，提供动作管理、事件处理、作用域和上下文管理、模板和样式表管理、调试支持、输出管理、排序和变量管理功能。
+调试器相关接口和功能：
+
+通过 Xsl/XsltOld/Debugger 文件夹内的类，提供 XSLT 调试器的接口和功能，管理堆栈帧、调试器接口、处理器接口，支持调试过程中对变换过程的控制。
+执行、错误处理和类型转换：
+
+通过 Xsl 文件夹内的类，处理 XSLT 相关的执行、错误处理和类型转换，提供执行委托和命令执行类、错误处理接口和异常类、类型转换工具和定义类、辅助工具和数据结构、查询读取器设置。
+总的来说， System.Data.SqlXml 文件夹提供了全面的支持，用于处理 XML 数据和 XSLT 样式表的各种操作，从资源管理和本地化支持，到中间语言生成和优化，查询中间语言节点操作，XSLT 运行时管理，XPath 表达式解析，XSLT 样式表编译和执行，调试支持等，确保高效、准确地执行和转换 XML 数据。
+
+System.Xml 文件夹功能总结
+System.Xml 文件夹包含了一系列用于处理 XML 数据的类和接口，这些文件提供了全面的功能，用于读取、写入、解析、验证和操作 XML 数据。总结如下：
+
+XML 读取和写入：
+
+提供了多种 XML 读取器和写入器类，如 XmlReader、XmlWriter 及其实现类 XmlTextReader、XmlTextWriter 等。这些类支持高效地读取和写入 XML 数据，处理不同的编码和格式。
+XML 编码和解码：
+
+包含了用于编码和解码 XML 数据的类，如 Base64Encoder、Base64Decoder、BinHexEncoder、BinHexDecoder 等。这些类支持将数据编码为 XML 兼容的格式或解码回原始格式。
+XML 验证：
+
+提供了验证 XML 数据的类，如 XmlValidatingReader、XmlSchemaValidator 等。这些类确保 XML 数据符合指定的 XML 架构或其他验证规则。
+XML 节点和文档操作：
+
+包含了用于操作 XML 节点和文档的类，如 XmlNode、XmlDocument、XmlElement、XmlAttribute 等。这些类支持创建、编辑和导航 XML 文档结构。
+事件和异常处理：
+
+定义了处理 XML 操作中事件和异常的类，如 XmlNodeChangedEventHandler、XmlException 等。这些类提供了在 XML 操作过程中处理错误和事件通知的机制。
+字符和编码处理：
+
+提供了处理字符和编码的类，如 XmlCharType、UTF16Decoder、Ucs4Encoding 等，这些类确保 XML 数据的字符编码和解码的正确性。
+辅助类和实用工具：
+
+包含了各种辅助类和实用工具，如 NameTable、XmlConvert、XmlNamespaceManager 等，这些类提供了支持 XML 操作的额外功能和优化。
+XPath 和 XSLT 支持：
+
+包含了与 XPath 和 XSLT 相关的类，如 XPathNavigator、XPathDocument、XsltSettings 等，支持在 XML 文档中进行复杂的查询和转换操作。
+高级 XML 序列化：
+
+提供了高级的 XML 序列化相关的类，如 MappedTypeDesc、SchemaImporterExtension 等，支持扩展和自定义 XML 序列化和反序列化过程。
+配置管理：
+
+包含了用于配置 XML 处理设置的类，如 XmlReaderSection、XsltConfigSection 等，这些类提供了在配置文件中定义和管理 XML 处理选项的功能。
+基础系统功能：
+
+提供了一些基础功能的实现，如 HResults、InvariantComparer、MarvinHash 等，这些功能在 XML 处理和其他系统操作中可能会用到。
+项目和程序集配置：
+
+包含了一些与程序集和项目配置相关的文件，如 AssemblyRef、FXAssembly、System.Xml.csproj 等，这些文件提供了对程序集和项目配置的支持，以及对 XML 字符类型处理的优化。
+总体而言，System.Xml 文件夹中的文件涵盖了 XML 数据处理的各个方面，提供了完整的解决方案，支持多种数据类型和复杂的 XML 操作需求。通过这些类和接口，开发者可以高效地读取、写入、解析、验证和操作 XML 数据，满足各种应用场景的需求。
